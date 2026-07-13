@@ -2,8 +2,11 @@ import React from 'react';
 import { motion } from 'motion/react';
 import { ShieldCheck, Target, Terminal, Award, BookOpen, Layers, Milestone } from 'lucide-react';
 import { currentCompanyData } from '../data';
+import { usePerformanceConfig } from '../hooks/usePerformanceConfig';
 
 export default function Experience() {
+  const { isLowPerformance } = usePerformanceConfig();
+
   const learningTopics = [
     { title: 'Python & Testing', desc: 'Asynchronous scripting, Object-Oriented patterns, pytest, memory profiling.', progress: 95 },
     { title: 'FastAPI & SQL', desc: 'FastAPI dependency injection, Pydantic validation, SQLAlchemy ORM, raw queries.', progress: 90 },
@@ -16,10 +19,10 @@ export default function Experience() {
   return (
     <section id="company" className="py-14 sm:py-24 bg-primary-bg relative">
       <motion.div
-        initial={{ opacity: 0, y: 30 }}
-        whileInView={{ opacity: 1, y: 0 }}
+        initial={isLowPerformance ? { opacity: 1 } : { opacity: 0, y: 30 }}
+        whileInView={isLowPerformance ? undefined : { opacity: 1, y: 0 }}
         viewport={{ once: true, margin: "-120px" }}
-        transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+        transition={isLowPerformance ? { duration: 0 } : { duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
         className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 gpu-layer"
       >
         
@@ -132,10 +135,10 @@ export default function Experience() {
                     <div className="h-1 w-full bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden border border-border-subtle">
                       <motion.div
                         className="h-full bg-gradient-to-r from-primary-accent to-secondary-accent rounded-full"
-                        initial={{ width: 0 }}
-                        whileInView={{ width: `${topic.progress}%` }}
+                        initial={{ width: isLowPerformance ? `${topic.progress}%` : 0 }}
+                        whileInView={isLowPerformance ? undefined : { width: `${topic.progress}%` }}
                         viewport={{ once: true }}
-                        transition={{ duration: 1.2, delay: index * 0.05 }}
+                        transition={isLowPerformance ? { duration: 0 } : { duration: 1.2, delay: index * 0.05 }}
                       />
                     </div>
                     <p className="text-[10px] text-text-secondary font-sans pl-5 leading-normal">

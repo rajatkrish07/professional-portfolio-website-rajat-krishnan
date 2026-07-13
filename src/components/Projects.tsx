@@ -3,8 +3,10 @@ import { motion } from 'motion/react';
 import { Github, ExternalLink, Cpu, Database, Network, GitBranch, ArrowRight, ShieldCheck } from 'lucide-react';
 import { projectsData } from '../data';
 import GithubShowcase from './GithubShowcase';
+import { usePerformanceConfig } from '../hooks/usePerformanceConfig';
 
 export default function Projects() {
+  const { isLowPerformance } = usePerformanceConfig();
   
   // Custom interactive system diagram components for the visual placeholders
   const renderSystemDiagram = (id: string) => {
@@ -124,10 +126,10 @@ export default function Projects() {
   return (
     <section id="projects" className="py-14 sm:py-24 bg-primary-bg relative overflow-hidden">
       <motion.div
-        initial={{ opacity: 0, y: 30 }}
-        whileInView={{ opacity: 1, y: 0 }}
+        initial={isLowPerformance ? { opacity: 1 } : { opacity: 0, y: 30 }}
+        whileInView={isLowPerformance ? undefined : { opacity: 1, y: 0 }}
         viewport={{ once: true, margin: "-120px" }}
-        transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+        transition={isLowPerformance ? { duration: 0 } : { duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
         className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 gpu-layer"
       >
         

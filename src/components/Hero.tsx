@@ -154,23 +154,23 @@ export default function Hero({ onViewProjects, onViewResume }: HeroProps) {
   ];
 
   const containerVariants = {
-    hidden: { opacity: 0 },
+    hidden: { opacity: isLowPerformance ? 1 : 0 },
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.1,
-        delayChildren: 0.1,
+        staggerChildren: isLowPerformance ? 0 : 0.1,
+        delayChildren: isLowPerformance ? 0 : 0.1,
       },
     },
   };
 
   const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
+    hidden: isLowPerformance ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 },
     visible: {
       opacity: 1,
       y: 0,
       transition: {
-        duration: 0.6,
+        duration: isLowPerformance ? 0 : 0.6,
         ease: [0.16, 1, 0.3, 1], // Custom ultra-smooth easeOutExpo curves
       },
     },
