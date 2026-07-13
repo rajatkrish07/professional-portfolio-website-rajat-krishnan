@@ -91,39 +91,29 @@ interface LazySectionProps {
 }
 
 function LazySection({ id, fallback, children }: LazySectionProps) {
-  const [isIntersected, setIsIntersected] = useState(false);
-  const ref = useRef<HTMLDivElement>(null);
+  const [shouldMount, setShouldMount] = useState(false);
 
   useEffect(() => {
-    if (isIntersected) return;
-
-    // Trigger pre-rendering of component 250px before entering viewport
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsIntersected(true);
-        }
-      },
-      {
-        root: null,
-        rootMargin: '250px 0px 250px 0px',
-        threshold: 0,
-      }
-    );
-
-    if (ref.current) {
-      observer.observe(ref.current);
-    }
+    // Eagerly but safely pre-fetch the dynamic chunks right after the critical above-the-fold content has loaded.
+    // Using requestIdleCallback ensures this network request doesn't compete with initial paint threads.
+    const idleCallback = (window as any).requestIdleCallback || ((cb: any) => setTimeout(cb, 100));
+    const handle = idleCallback(() => {
+      setShouldMount(true);
+    });
 
     return () => {
-      observer.disconnect();
+      if ((window as any).cancelIdleCallback) {
+        (window as any).cancelIdleCallback(handle);
+      } else {
+        clearTimeout(handle);
+      }
     };
-  }, [isIntersected]);
+  }, []);
 
   return (
-    <div id={isIntersected ? `${id}-lazy-wrapper` : id} ref={ref} className="w-full">
+    <div id={id} className="w-full">
       <Suspense fallback={fallback}>
-        {isIntersected ? children : fallback}
+        {shouldMount ? children : fallback}
       </Suspense>
     </div>
   );

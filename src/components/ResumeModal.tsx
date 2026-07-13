@@ -242,7 +242,30 @@ export default function ResumeModal({ isOpen, onClose }: ResumeModalProps) {
         }
       }
       
-      pdf.save('Rajat_Krishnan_Resume.pdf');
+      // Highly robust mobile-compatible saving and viewing flow (crucial inside iframe and sandbox environments)
+      const blob = pdf.output('blob');
+      const blobUrl = URL.createObjectURL(blob);
+      
+      const link = document.createElement('a');
+      link.href = blobUrl;
+      link.download = 'Rajat_Krishnan_Resume.pdf';
+      
+      const isMobileDevice = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+      const isIframe = window.self !== window.top;
+      
+      if (isMobileDevice || isIframe) {
+        // Under mobile Safari or sandbox iframes, setting target="_blank" prevents the browser from blocking the blob URL navigation and allows a direct save
+        link.target = '_blank';
+        link.rel = 'noopener noreferrer';
+      }
+      
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      
+      setTimeout(() => {
+        URL.revokeObjectURL(blobUrl);
+      }, 15000);
     } catch (error) {
       console.error('Error generating PDF:', error);
     } finally {
@@ -320,14 +343,12 @@ export default function ResumeModal({ isOpen, onClose }: ResumeModalProps) {
                   {isDownloading ? (
                     <>
                       <span className="w-3.5 h-3.5 border-2 border-white border-t-transparent rounded-full animate-spin shrink-0" />
-                      <span className="hidden xs:inline">Saving...</span>
-                      <span className="xs:hidden">Saving</span>
+                      <span>Saving...</span>
                     </>
                   ) : (
                     <>
                       <Download className="w-4 h-4 text-white dark:text-slate-950 shrink-0" />
-                      <span className="hidden xs:inline">Download</span>
-                      <span className="xs:hidden">Get</span>
+                      <span>Download</span>
                     </>
                   )}
                 </button>

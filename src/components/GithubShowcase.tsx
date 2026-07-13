@@ -26,9 +26,64 @@ interface GithubRepo {
   updated_at: string;
 }
 
+const INITIAL_USER: GithubUser = {
+  login: "rajatkrish07",
+  avatar_url: profileData.profilePicture,
+  html_url: "https://github.com/rajatkrish07",
+  name: "Rajat Krishnan",
+  bio: "Assistant Systems Engineer at TCS | Transitioning into AI / GenAI & Systems Engineering. FastAPI, Python, LangGraph, Docker.",
+  public_repos: 5,
+  followers: 18,
+  following: 22,
+  created_at: "2021-09-12T14:32:00Z"
+};
+
+const INITIAL_REPOS: GithubRepo[] = [
+  {
+    id: 1,
+    name: "spotify-etl-pipeline",
+    description: "A serverless, automated ETL data pipeline engineered to ingest Spotify streaming data, parse payloads with Python, crawl structures via AWS Glue, and optimize queries in S3.",
+    html_url: "https://github.com/rajatkrish07/spotify-etl-pipeline",
+    stargazers_count: 5,
+    forks_count: 2,
+    language: "Python",
+    updated_at: "2026-03-10T12:00:00Z"
+  },
+  {
+    id: 2,
+    name: "cogentra-enterprise-intelligence-platform",
+    description: "An enterprise-grade orchestration engine coordinating multi-agent loops. Built on FastAPI and LangGraph with stateful memory checkpoints and strict validation schemas.",
+    html_url: "https://github.com/rajatkrish07/cogentra-enterprise-intelligence-platform",
+    stargazers_count: 8,
+    forks_count: 3,
+    language: "TypeScript",
+    updated_at: "2026-06-15T09:30:00Z"
+  },
+  {
+    id: 3,
+    name: "capitalminds-rag-pipeline",
+    description: "A secure, semantic RAG retrieval system applying customized financial chunking models, custom templates, and PGVector database context search.",
+    html_url: "https://github.com/rajatkrish07",
+    stargazers_count: 4,
+    forks_count: 1,
+    language: "Python",
+    updated_at: "2026-05-20T16:45:00Z"
+  },
+  {
+    id: 4,
+    name: "instagram-data-model",
+    description: "An optimized database model built in PostgreSQL covering social metrics, paired with advanced analytical SQL queries to isolate user activity trends.",
+    html_url: "https://github.com/rajatkrish07",
+    stargazers_count: 3,
+    forks_count: 1,
+    language: "Shell",
+    updated_at: "2026-02-28T10:15:00Z"
+  }
+];
+
 export default function GithubShowcase() {
-  const [user, setUser] = useState<GithubUser | null>(null);
-  const [repos, setRepos] = useState<GithubRepo[]>([]);
+  const [user, setUser] = useState<GithubUser>(INITIAL_USER);
+  const [repos, setRepos] = useState<GithubRepo[]>(INITIAL_REPOS);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -108,35 +163,6 @@ export default function GithubShowcase() {
       default: return 'bg-slate-100 dark:bg-slate-800/80';
     }
   };
-
-  if (loading) {
-    return (
-      <div className="w-full py-16 px-4 flex flex-col items-center justify-center space-y-4 rounded-2xl bg-card-bg/40 border border-border-subtle/50 backdrop-blur-xs">
-        <RefreshCw className="w-8 h-8 text-primary-accent animate-spin" />
-        <p className="text-sm font-mono text-text-secondary">Establishing live handshake with api.github.com...</p>
-      </div>
-    );
-  }
-
-  if (error || !user) {
-    return (
-      <div className="w-full p-8 rounded-2xl bg-rose-500/5 border border-rose-500/20 backdrop-blur-xs flex flex-col md:flex-row items-center md:items-start gap-5">
-        <AlertCircle className="w-8 h-8 text-rose-500 shrink-0 mt-0.5" />
-        <div className="space-y-3 text-center md:text-left">
-          <h4 className="font-display text-base font-bold text-text-primary">Unable to fetch live GitHub contributions</h4>
-          <p className="text-xs sm:text-sm text-text-secondary leading-relaxed max-w-xl">
-            {error || "We encountered an issue establishing a secure connection to the public GitHub API. Please check your internet connection or GitHub rate limits."}
-          </p>
-          <button
-            onClick={fetchGithubData}
-            className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-xs font-mono font-medium hover:text-primary-accent transition-all shadow-xs cursor-pointer"
-          >
-            <RefreshCw className="w-3.5 h-3.5" /> Retry Sync
-          </button>
-        </div>
-      </div>
-    );
-  }
 
   const cells = generateContributionCells();
 
@@ -272,13 +298,31 @@ export default function GithubShowcase() {
 
       {/* Most Active Repositories Grid */}
       <div className="space-y-4">
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between gap-3 flex-wrap">
           <h4 className="font-display text-sm font-semibold text-text-primary uppercase tracking-wider">
             Most Active Public Repositories
           </h4>
-          <span className="text-[10px] font-mono text-primary-accent bg-primary-accent/10 dark:bg-primary-accent/20 px-2 py-0.5 rounded border border-primary-accent/20">
-            LIVE SYNC ACTIVE
-          </span>
+          {loading ? (
+            <span className="inline-flex items-center gap-1.5 text-[10px] font-mono text-primary-accent bg-primary-accent/5 dark:bg-primary-accent/10 px-2 py-0.5 rounded border border-primary-accent/20 animate-pulse">
+              <RefreshCw className="w-3 h-3 animate-spin" /> SYNCING DATA...
+            </span>
+          ) : error ? (
+            <button
+              onClick={fetchGithubData}
+              title="GitHub API limit reached or offline. Click to retry sync."
+              className="inline-flex items-center gap-1.5 text-[10px] font-mono text-amber-600 dark:text-amber-400 bg-amber-500/10 px-2.5 py-0.5 rounded border border-amber-500/20 hover:bg-amber-500/20 transition-all cursor-pointer"
+            >
+              <AlertCircle className="w-3.5 h-3.5 text-amber-500" /> OFFLINE / CACHED MODEL (RETRY)
+            </button>
+          ) : (
+            <button
+              onClick={fetchGithubData}
+              title="Real-time synchronization active. Click to refresh."
+              className="inline-flex items-center gap-1.5 text-[10px] font-mono text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 px-2.5 py-0.5 rounded border border-emerald-500/20 hover:bg-emerald-500/20 transition-all cursor-pointer"
+            >
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" /> LIVE SYNC ACTIVE
+            </button>
+          )}
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5">

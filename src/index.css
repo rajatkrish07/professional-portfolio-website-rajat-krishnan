@@ -152,11 +152,7 @@ html {
   will-change: transform, opacity;
 }
 
-/* Use content-visibility to bypass paint/layout for offscreen sections (boosts FPS to solid 60/120) */
-section {
-  content-visibility: auto;
-  contain-intrinsic-size: 0 500px; /* Sane placeholder heights to prevent layout shifts */
-}
+/* content-visibility optimization removed to guarantee perfect and immediate viewport, height, and layout calculation across all devices */
 
 /* Dedicated CSS Print Stylesheet for A4 Paper Format */
 @media print {

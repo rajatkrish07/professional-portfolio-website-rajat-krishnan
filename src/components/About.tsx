@@ -27,10 +27,7 @@ export default function About() {
       <div className="absolute top-1/2 left-1/4 -translate-y-1/2 w-[350px] h-[350px] bg-primary-accent/5 rounded-full pointer-events-none blur-[80px]" />
       
       <motion.div
-        initial={isLowPerformance ? { opacity: 1 } : { opacity: 0, y: 30 }}
-        whileInView={isLowPerformance ? undefined : { opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: "-120px" }}
-        transition={isLowPerformance ? { duration: 0 } : { duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+        initial={{ opacity: 1, y: 0 }}
         className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 gpu-layer"
       >
         
