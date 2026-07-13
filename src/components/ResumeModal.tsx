@@ -5,6 +5,7 @@ import { profileData, currentCompanyData } from '../data';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 import { usePerformanceConfig } from '../hooks/usePerformanceConfig';
+import { downloadFile } from '../utils/download';
 
 // Helper function to convert oklch(...) colors to standard rgb(...) or rgba(...)
 const convertOklchToRgbInString = (str: string): string => {
@@ -63,6 +64,7 @@ export default function ResumeModal({ isOpen, onClose }: ResumeModalProps) {
   const resumeRef = useRef<HTMLDivElement>(null);
   const wrapperRef = useRef<HTMLDivElement>(null);
   const [isDownloading, setIsDownloading] = useState(false);
+  const [downloadError, setDownloadError] = useState<string | null>(null);
   const [scale, setScale] = useState(1);
   const [actualHeight, setActualHeight] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
@@ -110,6 +112,7 @@ export default function ResumeModal({ isOpen, onClose }: ResumeModalProps) {
   const handleDownload = async () => {
     if (isDownloading) return;
     setIsDownloading(true);
+    setDownloadError(null);
 
     const originalGetComputedStyle = window.getComputedStyle;
     const originalStyleSheets = Array.from(document.styleSheets);
@@ -117,7 +120,9 @@ export default function ResumeModal({ isOpen, onClose }: ResumeModalProps) {
 
     try {
       const element = resumeRef.current;
-      if (!element) return;
+      if (!element) {
+        throw new Error('Resume element reference is not available.');
+      }
 
       // 1. Temporarily patch/convert stylesheets containing oklch
       for (const sheet of originalStyleSheets) {
@@ -242,32 +247,14 @@ export default function ResumeModal({ isOpen, onClose }: ResumeModalProps) {
         }
       }
       
-      // Highly robust mobile-compatible saving and viewing flow (crucial inside iframe and sandbox environments)
+      const filename = 'Rajat_Krishnan_Resume.pdf';
       const blob = pdf.output('blob');
-      const blobUrl = URL.createObjectURL(blob);
       
-      const link = document.createElement('a');
-      link.href = blobUrl;
-      link.download = 'Rajat_Krishnan_Resume.pdf';
-      
-      const isMobileDevice = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-      const isIframe = window.self !== window.top;
-      
-      if (isMobileDevice || isIframe) {
-        // Under mobile Safari or sandbox iframes, setting target="_blank" prevents the browser from blocking the blob URL navigation and allows a direct save
-        link.target = '_blank';
-        link.rel = 'noopener noreferrer';
-      }
-      
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      
-      setTimeout(() => {
-        URL.revokeObjectURL(blobUrl);
-      }, 15000);
-    } catch (error) {
-      console.error('Error generating PDF:', error);
+      // Use the robust, cross-browser, Blob-based utility to trigger download/native sharing
+      await downloadFile(blob, filename);
+    } catch (error: any) {
+      console.error('Error generating or saving PDF resume:', error);
+      setDownloadError(error?.message || 'Failed to download resume. Please try again or print the page.');
     } finally {
       // Restore window.getComputedStyle
       window.getComputedStyle = originalGetComputedStyle;
@@ -353,6 +340,30 @@ export default function ResumeModal({ isOpen, onClose }: ResumeModalProps) {
                   )}
                 </button>
               </div>
+
+              {downloadError && (
+                <div className="bg-rose-50 dark:bg-rose-950/20 border-b border-rose-200 dark:border-rose-900/40 px-4 py-2 text-xs sm:text-sm text-rose-800 dark:text-rose-300 flex items-center justify-between gap-3 print:hidden">
+                  <div className="flex items-center gap-2 min-w-0">
+                    <span className="w-2 h-2 rounded-full bg-rose-500 animate-pulse shrink-0" />
+                    <p className="truncate font-sans">{downloadError}</p>
+                  </div>
+                  <div className="flex items-center gap-2 shrink-0">
+                    <button 
+                      onClick={handleDownload}
+                      className="px-2.5 py-1 bg-rose-600 hover:bg-rose-700 text-white font-semibold rounded text-[10px] font-mono cursor-pointer transition-colors active:scale-95"
+                    >
+                      Retry
+                    </button>
+                    <button 
+                      onClick={() => setDownloadError(null)}
+                      className="p-1 hover:bg-rose-100 dark:hover:bg-rose-900/40 rounded text-rose-500 transition-colors"
+                      aria-label="Dismiss error"
+                    >
+                      <X className="w-3.5 h-3.5" />
+                    </button>
+                  </div>
+                </div>
+              )}
 
               {/* Printable Area Wrapper */}
               <div

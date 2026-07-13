@@ -28,7 +28,7 @@ export default function About() {
       
       <motion.div
         initial={{ opacity: 1, y: 0 }}
-        className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 gpu-layer"
+        className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10"
       >
         
         {/* Section Header */}

@@ -20,7 +20,7 @@ export default function Experience() {
     <section id="company" className="py-14 sm:py-24 bg-primary-bg relative">
       <motion.div
         initial={{ opacity: 1, y: 0 }}
-        className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 gpu-layer"
+        className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"
       >
         
         {/* Section Header */}

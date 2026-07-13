@@ -127,7 +127,7 @@ export default function Projects() {
     <section id="projects" className="py-14 sm:py-24 bg-primary-bg relative overflow-hidden">
       <motion.div
         initial={{ opacity: 1, y: 0 }}
-        className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 gpu-layer"
+        className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"
       >
         
         {/* Section Header */}
