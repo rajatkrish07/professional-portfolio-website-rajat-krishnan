@@ -36,13 +36,8 @@ export default function Footer() {
               referrerPolicy="no-referrer"
               className="w-8 h-8 rounded-full object-cover border border-primary-accent/30 shadow-xs shrink-0"
               onError={(e) => {
-                const currentSrc = e.currentTarget.src;
-                if (!currentSrc.endsWith('/profile.jpg')) {
-                  e.currentTarget.src = "/profile.jpg";
-                } else {
-                  e.currentTarget.onerror = null;
-                  e.currentTarget.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100%' height='100%' fill='%230f172a'/%3E%3Ctext x='50%' y='55%' font-family='sans-serif' font-size='32' font-weight='bold' fill='%2338bdf8' text-anchor='middle' dominant-baseline='middle'%3ERK%3C/text%3E%3C/svg%3E";
-                }
+                e.currentTarget.onerror = null;
+                e.currentTarget.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100%' height='100%' fill='%230f172a'/%3E%3Ctext x='50%' y='55%' font-family='sans-serif' font-size='32' font-weight='bold' fill='%2338bdf8' text-anchor='middle' dominant-baseline='middle'%3ERK%3C/text%3E%3C/svg%3E";
               }}
             />
             <div className="space-y-0.5 text-center sm:text-left">

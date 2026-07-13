@@ -119,13 +119,8 @@ export default function Navbar({ activeSection, onNavigate, onViewResume }: Navb
                 referrerPolicy="no-referrer"
                 className="w-full h-full rounded-full object-cover transition-transform duration-500 group-hover:scale-105"
                 onError={(e) => {
-                  const currentSrc = e.currentTarget.src;
-                  if (!currentSrc.endsWith('/profile.jpg')) {
-                    e.currentTarget.src = "/profile.jpg";
-                  } else {
-                    e.currentTarget.onerror = null;
-                    e.currentTarget.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100%' height='100%' fill='%230f172a'/%3E%3Ctext x='50%' y='55%' font-family='sans-serif' font-size='32' font-weight='bold' fill='%2338bdf8' text-anchor='middle' dominant-baseline='middle'%3ERK%3C/text%3E%3C/svg%3E";
-                  }
+                  e.currentTarget.onerror = null;
+                  e.currentTarget.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100%' height='100%' fill='%230f172a'/%3E%3Ctext x='50%' y='55%' font-family='sans-serif' font-size='32' font-weight='bold' fill='%2338bdf8' text-anchor='middle' dominant-baseline='middle'%3ERK%3C/text%3E%3C/svg%3E";
                 }}
               />
             </div>
