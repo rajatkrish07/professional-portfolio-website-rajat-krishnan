@@ -1,9 +1,15 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { 
   Code, Database, Server, Play, CheckCircle, Sparkles, 
   Workflow, Bot, Search, GitBranch, RefreshCw, Layers, 
-  Shield, ChevronRight, Send
+  Shield, ChevronRight, Send, ArrowRight
 } from 'lucide-react';
+
+interface StorySegment {
+  learned: string;
+  built: string;
+  bridge: string;
+}
 
 interface Stage {
   id: number;
@@ -12,64 +18,74 @@ interface Stage {
   badge: string;
   description: string;
   techs: string[];
+  story: StorySegment;
 }
 
 const stagesData: Stage[] = [
   {
     id: 1,
-    title: "Learning Foundations",
-    subtitle: "01 // COGNITIVE BEGINNINGS",
-    badge: "Foundations",
-    description: "Developing robust fundamental problem-solving skills. Mastering relational algebra, data normalization, and standard OOP principles that form the absolute bedrock of sustainable backend logic.",
-    techs: ["Python", "PostgreSQL", "OOP", "Data Structures"]
+    title: "Foundational Software & Database Design",
+    subtitle: "01 // THE SOLID BEDROCK",
+    badge: "Engineering Core",
+    description: "Deepening computing fundamentals and theoretical models into engineering practice at Chandigarh University. Mastering data structures, relational database normalization, and Object-Oriented Programming (OOP) in Python to build deterministic, high-efficiency logic.",
+    techs: ["Python", "PostgreSQL", "SQL Analytics", "OOP", "Git"],
+    story: {
+      learned: "Mastered core computer science principles including relational database theory, database normalization (3NF), object-oriented design patterns (inheritance, encapsulation, polymorphism), and complex analytical SQL (CTEs, Window functions).",
+      built: "Designed a normalized 3NF relational social media data model (Instagram Analytics) in PostgreSQL, writing complex analytics query blocks to isolate engagement diagnostics and user retention factors.",
+      bridge: "Taught me how to model data cleanly and organize logic modularly, creating the absolute architectural foundation necessary to build type-safe schemas and backend Web APIs."
+    }
   },
   {
     id: 2,
-    title: "Building Software",
-    subtitle: "02 // BACKEND EXCELLENCE",
-    badge: "API Architecture",
-    description: "Moving from scripts to scalable production applications. Architecting type-safe backends with strict request-response validations using Pydantic, async SQLAlchemy, and modular routers.",
-    techs: ["FastAPI", "RESTful APIs", "Pydantic", "SQLAlchemy"]
+    title: "Type-Safe APIs & Web Architectures",
+    subtitle: "02 // SCALABLE BACKEND INTERFACES",
+    badge: "API Design",
+    description: "Transitioning from scripts to scalable, production-grade backends. Architecting high-throughput, asynchronous web server architectures with FastAPI, enforcing data validation using Pydantic, and abstracting data layers via SQLAlchemy ORM.",
+    techs: ["FastAPI", "Pydantic", "SQLAlchemy", "RESTful APIs", "JWT Auth"],
+    story: {
+      learned: "Learned asynchronous request-response lifecycles, strict schema validation/serialization via Pydantic Data Transfer Objects (DTOs), clean layered file structures, and state-free token-based authorization.",
+      built: "Engineered high-throughput, async REST API server endpoints in FastAPI with automatic OpenAPI docs, creating a modular service layer to execute database transactions efficiently via SQLAlchemy.",
+      bridge: "Provided the scalable API infrastructure skills required to host, expose, and secure resource-heavy AI inference pipelines and live vector database queries."
+    }
   },
   {
     id: 3,
-    title: "Enterprise Engineering",
-    subtitle: "03 // SYSTEM RELIABILITY",
-    badge: "Scale & Testing",
-    description: "Formulating enterprise-grade system workflows. Implementing strict unit test coverage, CI/CD automated deployment runner matrices, containerization, and async processing worker queues.",
-    techs: ["Docker", "Pytest", "GitHub Actions", "Redis Queues"]
+    title: "Enterprise Automation & Cloud Ingestion",
+    subtitle: "03 // SCALE & SYSTEM RELIABILITY",
+    badge: "Reliability Engineering",
+    description: "Formulating automated data workflows and continuous integration environments inside high-compliance enterprise systems at Tata Consultancy Services (TCS). Designing serverless stream ingestion pipelines and automated testing suites.",
+    techs: ["Docker", "Pytest", "AWS Lambda & S3", "AWS Glue", "CI/CD"],
+    story: {
+      learned: "Mastered serverless execution workflows, cloud storage partition schemas, automated schema discovery with Glue crawlers, and strict test-driven development (TDD) using Pytest and Docker containers.",
+      built: "Optimized and automated 15+ backend enterprise data ingestion pipelines processing over 50+ GB of structured data weekly at TCS, and designed an automated serverless Spotify ETL streaming pipeline on AWS.",
+      bridge: "Working with high-volume, structured dataset transformations directly mapped to the strict, zero-loss text embedding extraction pipelines, prompt schemas, and strict data validation systems in LLM applications."
+    }
   },
   {
     id: 4,
-    title: "Exploring AI",
-    subtitle: "04 // KNOWLEDGE GROUNDING",
-    badge: "Semantic RAG",
-    description: "Entering the world of Natural Language Processing and LLM interfaces. Crafting document segmentation layers, computing high-dimensional text embeddings, and setting up contextually relevant Vector databases.",
-    techs: ["LangChain", "Vector DBs", "Pinecone", "Embeddings"]
+    title: "Retrieval-Augmented Generation (RAG)",
+    subtitle: "04 // SEMANTIC INTERFACES & RETRIEVAL",
+    badge: "Information Grounding",
+    description: "Translating static, unstructured documents into context-grounded AI knowledge. Implementing advanced document segmentations, calculating high-dimensional embeddings, and configuring PGVector hybrid indexes for similarity-based context search.",
+    techs: ["LangChain", "PGVector", "OpenAI Embeddings", "Semantic Chunking", "PDF Parsing"],
+    story: {
+      learned: "Mastered vector math, semantic parsing chunk algorithms, embedding calculation models, and hybrid database index optimization (HNSW) to prevent LLM hallucinations with grounded enterprise data.",
+      built: "Engineered 'Capital Minds', a high-performance financial intelligence PDF parsing and RAG query pipeline. It ingests complex financial statements, indexes them into PGVector, and retrieves precise similarity-matched snippets.",
+      bridge: "Transitioned me from static API backends to dynamic context-driven architectures, unlocking the ability to feed real-time, grounded enterprise memory into large generative models."
+    }
   },
   {
     id: 5,
-    title: "Intelligent Systems",
-    subtitle: "05 // HYBRID INTEGRATION",
-    badge: "Contextual Chains",
-    description: "Building systems that connect the real world to AI models. Creating complex, reliable multi-step execution chains that inject database lookups and API parameters into generative contexts on the fly.",
-    techs: ["Context Engines", "Gemini API", "Chains", "State Guarding"]
-  },
-  {
-    id: 6,
-    title: "Agentic AI",
-    subtitle: "06 // AUTONOMOUS WORKFLOWS",
-    badge: "Orchestration",
-    description: "Designing self-directed systems that reason. Structuring autonomous planning loops, recursive reflection, tool access permissions, and automated self-correction blocks for complex workflows.",
-    techs: ["Agent Loops", "Tool Calling", "ReAct Framework", "Self-Correction"]
-  },
-  {
-    id: 7,
-    title: "The Future",
-    subtitle: "07 // ENTERPRISE IMPACT",
-    badge: "Capital Minds AI",
-    description: "Shaping the frontier of enterprise intelligence. Developing Capital Minds AI, focusing on local private hosting solutions, strict data privacy protocols, agentic market research, and high-ROI systems.",
-    techs: ["Capital Minds AI", "Local-First LLMs", "Enterprise ROI", "Data Security"]
+    title: "Autonomous Multi-Agent Systems",
+    subtitle: "05 // COGNITIVE AGENT WORKFLOWS",
+    badge: "Autonomous Systems",
+    description: "Moving beyond single-step prompting into fully autonomous software agents. Designing stateful, cyclic multi-agent loops with LangGraph that can plan complex steps, execute local code tools, self-reflect, and adhere to strict security constraints.",
+    techs: ["LangGraph", "AI Agents", "State Machines", "Tool Calling", "ReAct Loop", "Self-Correction"],
+    story: {
+      learned: "Mastered the ReAct (Reasoning and Acting) loop framework, dynamic tool invocation, thread-level memory persistence, custom-directed state-chart cycles, and automated reflection/validation layers.",
+      built: "Architected 'Cogentra', an enterprise-grade multi-agent backend engine coordinating Planner, Executor, and Validator agent loops using FastAPI and LangGraph with state-level memory checkpoints.",
+      bridge: "Completed my evolution into an AI & Systems Engineer, combining robust database design, asynchronous FastAPI routes, serverless infrastructure, and RAG knowledge-grounding into self-healing, intelligent software nodes."
+    }
   }
 ];
 
@@ -78,706 +94,614 @@ const stageIcons: Record<number, React.ComponentType<any>> = {
   2: Server,
   3: Shield,
   4: Search,
-  5: Layers,
-  6: Bot,
-  7: Sparkles
+  5: Bot
 };
 
 // ==========================================
-// STAGE-SPECIFIC INTERACTIVE SUB-COMPONENTS
+// HIGH-QUALITY MINIMAL SVG DIAGRAMS
 // ==========================================
 
-function DatabaseSandbox() {
-  const [sqlQuery, setSqlQuery] = useState("SELECT name, skills FROM engineers WHERE role = 'AI';");
-  const [sqlResults, setSqlResults] = useState<any[]>([
-    { name: "Rajat Krishnan", skills: "FastAPI, Pytest, Docker, AI" },
-    { name: "Agent Alpha", skills: "Autonomous Planning, Vector DBs" }
-  ]);
-  const [sqlLoading, setSqlLoading] = useState(false);
-  const [oopOutput, setOopOutput] = useState('');
-
-  const executeSQL = (queryText: string) => {
-    setSqlLoading(true);
-    setSqlResults([]);
-    setOopOutput('');
-    setSqlQuery(queryText);
-    setTimeout(() => {
-      setSqlLoading(false);
-      if (queryText.includes('WHERE role')) {
-        setSqlResults([
-          { name: "Rajat Krishnan", skills: "FastAPI, Pytest, Docker, AI" },
-          { name: "Agent Alpha", skills: "Autonomous Planning, Vector DBs" }
-        ]);
-      } else {
-        setSqlResults([
-          { name: "Rajat Krishnan", role: "AI & Systems Engineer", status: "Active" },
-          { name: "Agent Alpha", role: "Orchestrator Node", status: "Active" }
-        ]);
-      }
-    }, 500);
-  };
-
-  const simulateOOP = () => {
-    setSqlResults([]);
-    setOopOutput("Initializing classes...\n");
-    setTimeout(() => {
-      setOopOutput(prev => prev + "class Engineer:\n   def __init__(self, name):\n       self.name = name\n       self.stack = []\n");
-    }, 250);
-    setTimeout(() => {
-      setOopOutput(prev => prev + "\n>>> rajat = Engineer('Rajat')\n>>> rajat.add_skill('Agentic AI')\n>>> print(f'{rajat.name} specializing in {rajat.stack[0]}')\n");
-    }, 700);
-    setTimeout(() => {
-      setOopOutput(prev => prev + "Output: Rajat specializing in Agentic AI ✅\n");
-    }, 1100);
-  };
-
+function FoundationsDiagram() {
   return (
-    <div className="rounded-2xl bg-[#050b1d] border border-[#1e3a8a]/20 font-mono text-slate-300 flex flex-col justify-between text-left p-4 min-h-[220px] mt-4 shadow-inner">
-      <div>
-        <div className="flex items-center justify-between border-b border-[#1e3a8a]/10 pb-2 mb-3">
-          <span className="text-[10px] text-slate-500 flex items-center gap-1 font-semibold">
-            <Database className="w-3.5 h-3.5 text-blue-400" /> interactive_postgre.sql
-          </span>
-          <span className="text-[9px] text-[#38bdf8] bg-[#38bdf8]/10 px-1.5 py-0.5 rounded border border-[#38bdf8]/10">SCHEMA: ACADEMIC_PROD</span>
-        </div>
-
-        <div className="flex gap-1.5 mb-3 flex-wrap">
-          <button 
-            onClick={() => executeSQL("SELECT name, skills FROM engineers WHERE role = 'AI';")}
-            className="px-2 py-0.5 rounded text-[9px] bg-[#1e3a8a]/20 hover:bg-[#1e3a8a]/40 border border-[#1e3a8a]/40 text-blue-300 font-bold cursor-pointer transition-all"
-          >
-            Preset 1: AI Query
-          </button>
-          <button 
-            onClick={() => executeSQL("SELECT name, role, status FROM active_pipelines;")}
-            className="px-2 py-0.5 rounded text-[9px] bg-[#1e3a8a]/20 hover:bg-[#1e3a8a]/40 border border-[#1e3a8a]/40 text-blue-300 font-bold cursor-pointer transition-all"
-          >
-            Preset 2: Node Status
-          </button>
-          <button 
-            onClick={simulateOOP}
-            className="px-2 py-0.5 rounded text-[9px] bg-purple-500/10 hover:bg-purple-500/20 border border-purple-500/20 text-purple-300 font-bold cursor-pointer transition-all"
-          >
-            Simulate OOP class
-          </button>
-        </div>
-
-        <div className="space-y-2">
-          <div className="flex items-start gap-1 bg-slate-950/80 p-2 rounded border border-[#1e3a8a]/10">
-            <span className="text-emerald-400 font-bold shrink-0">&gt;</span>
-            <span className="text-xs text-slate-200 select-all font-bold break-all whitespace-pre-wrap leading-relaxed">{sqlQuery}</span>
-          </div>
-
-          {sqlLoading ? (
-            <div className="flex items-center gap-2 text-slate-500 text-xs italic pt-2">
-              <RefreshCw className="w-3.5 h-3.5 animate-spin" /> Query compiler mapping relations...
-            </div>
-          ) : sqlResults.length > 0 ? (
-            <div className="text-left font-mono rounded bg-slate-950 p-2 border border-slate-900/60 overflow-x-auto">
-              <table className="w-full text-[10px] text-slate-400 leading-normal border-collapse">
-                <thead>
-                  <tr className="border-b border-slate-800 text-slate-500">
-                    {Object.keys(sqlResults[0]).map((key, kIdx) => (
-                      <th key={kIdx} className="text-left py-1 pr-4 font-semibold uppercase">{key}</th>
-                    ))}
-                  </tr>
-                </thead>
-                <tbody>
-                  {sqlResults.map((row, idx) => (
-                    <tr key={idx} className="border-b border-slate-900/20 hover:bg-slate-900/40">
-                      {Object.values(row).map((val: any, vIdx) => (
-                        <td key={vIdx} className="py-1 pr-4 text-emerald-300 font-bold">{val}</td>
-                      ))}
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          ) : null}
-
-          {oopOutput && (
-            <div className="text-left font-mono rounded bg-slate-950/60 p-2 border border-purple-500/10 text-[9px] leading-relaxed text-slate-300 whitespace-pre-wrap">
-              {oopOutput}
-            </div>
-          )}
-        </div>
+    <div className="w-full bg-slate-50/50 dark:bg-slate-900/10 border border-slate-200/50 dark:border-slate-800/40 rounded-2xl p-4 sm:p-6 mt-6 shadow-2xs hover:shadow-xs transition-all duration-300 animate-fade-in">
+      <div className="flex items-center justify-between border-b border-slate-200/40 dark:border-slate-800/30 pb-2.5 mb-4 font-mono text-[10px] text-text-secondary">
+        <span>ARCHITECTURAL MODEL // SYSTEM SCHEMAS</span>
+        <span className="text-primary-accent font-bold">OOP ➔ SQL RELATIONAL</span>
       </div>
+      <svg viewBox="0 0 640 320" className="w-full h-auto text-text-primary">
+        <defs>
+          <linearGradient id="blue-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="var(--primary-accent)" stopOpacity="0.12" />
+            <stop offset="100%" stopColor="var(--primary-accent)" stopOpacity="0.02" />
+          </linearGradient>
+          <linearGradient id="emerald-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#10b981" stopOpacity="0.12" />
+            <stop offset="100%" stopColor="#10b981" stopOpacity="0.02" />
+          </linearGradient>
+          <marker id="arrow-blue" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="var(--primary-accent)" />
+          </marker>
+          <marker id="arrow-emerald" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#10b981" />
+          </marker>
+          <marker id="arrow-slate" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#64748b" />
+          </marker>
+        </defs>
+        
+        <style>{`
+          .svg-card { transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
+          .svg-card:hover { transform: translate(-1px, -2px); filter: drop-shadow(0 12px 20px rgba(0,0,0,0.04)); }
+          .svg-card-right:hover { transform: translate(1px, -2px); filter: drop-shadow(0 12px 20px rgba(0,0,0,0.04)); }
+          .flow-line { stroke-dasharray: 5, 5; animation: flow 30s linear infinite; }
+          @keyframes flow { to { stroke-dashoffset: -1000; } }
+        `}</style>
 
-      <div className="flex items-center justify-between border-t border-[#1e3a8a]/15 pt-2 mt-3 text-[9px] text-slate-500">
-        <span>Query Execution: 0.03ms</span>
-        <span>Host: localhost:5432</span>
-      </div>
-    </div>
-  );
-}
-
-function ApiPlayground() {
-  const [endpointParam, setEndpointParam] = useState('capital_analyzer');
-  const [apiResponse, setApiResponse] = useState<any>({
-    status_code: 200,
-    latency_ms: 18.4,
-    headers: {
-      "content-type": "application/json",
-      "server": "uvicorn/fastapi"
-    },
-    payload: {
-      agent_triggered: "capital_analyzer",
-      execution_status: "SUCCESS",
-      orchestration_loop_duration: "1.4s",
-      compliance_check: "PASSED",
-      data: {
-        variables_fused: ["DB_METRICS", "GIT_SHA_LATEST"],
-        output_tokens_generated: 412,
-        target_roi_improvement: "85%"
-      }
-    }
-  });
-  const [apiLoading, setApiLoading] = useState(false);
-
-  const sendApiRequest = () => {
-    setApiLoading(true);
-    setApiResponse(null);
-    setTimeout(() => {
-      setApiLoading(false);
-      setApiResponse({
-        status_code: 200,
-        latency_ms: 18.4,
-        headers: {
-          "content-type": "application/json",
-          "server": "uvicorn/fastapi"
-        },
-        payload: {
-          agent_triggered: endpointParam,
-          execution_status: "SUCCESS",
-          orchestration_loop_duration: "1.4s",
-          compliance_check: "PASSED",
-          data: {
-            variables_fused: ["DB_METRICS", "GIT_SHA_LATEST"],
-            output_tokens_generated: 412,
-            target_roi_improvement: "85%"
-          }
-        }
-      });
-    }, 600);
-  };
-
-  return (
-    <div className="rounded-2xl bg-[#090d16] border border-violet-500/20 font-sans flex flex-col justify-between text-left p-4 min-h-[220px] mt-4 shadow-inner">
-      <div>
-        <div className="flex flex-wrap items-center justify-between gap-2 border-b border-border-subtle/30 pb-2 mb-3">
-          <div className="flex items-center gap-1.5">
-            <span className="w-2 h-2 rounded-full bg-emerald-500 shrink-0" />
-            <span className="text-[10px] font-mono text-slate-400 break-all font-semibold">FASTAPI SWAGGER DOCS PLAYGROUND (v1.2)</span>
-          </div>
-          <span className="text-[9px] font-mono text-violet-400 font-semibold bg-violet-400/5 px-2 py-0.5 rounded border border-violet-400/10 shrink-0">async uvicorn</span>
-        </div>
-
-        <div className="space-y-3">
-          <div className="flex flex-col sm:flex-row sm:items-center gap-2 bg-slate-950 p-1.5 rounded-xl border border-border-subtle/40">
-            <div className="flex items-center gap-2 flex-grow min-w-0">
-              <span className="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-emerald-500 text-white shrink-0">POST</span>
-              <span className="font-mono text-[11px] sm:text-xs text-slate-300 font-semibold truncate">/api/v1/agents/trigger</span>
-            </div>
-            <div className="flex items-center gap-2 shrink-0 self-end sm:self-auto">
-              <div className="flex items-center gap-1 bg-slate-900 px-2 py-0.5 rounded text-[10px] text-slate-400 border border-slate-800">
-                <span className="text-purple-400 font-bold font-mono">id:</span>
-                <input 
-                  type="text" 
-                  value={endpointParam} 
-                  onChange={(e) => setEndpointParam(e.target.value)}
-                  className="bg-transparent text-slate-200 w-20 sm:w-24 outline-none border-none font-bold font-mono"
-                />
-              </div>
-              <button 
-                onClick={sendApiRequest}
-                className="px-2.5 py-1 rounded bg-violet-600 hover:bg-violet-500 text-white text-[10px] font-mono font-bold flex items-center gap-1 cursor-pointer transition-colors shrink-0"
-              >
-                <Send className="w-3 h-3" /> Send
-              </button>
-            </div>
-          </div>
-
-          {apiLoading ? (
-            <div className="flex items-center gap-2 text-slate-500 text-xs italic pt-2 font-mono">
-              <RefreshCw className="w-3.5 h-3.5 animate-spin text-violet-400" /> Sending request headers, validating schemas...
-            </div>
-          ) : apiResponse ? (
-            <div className="p-3 rounded-xl bg-slate-950 text-[10px] font-mono text-slate-300 border border-border-subtle/30 leading-relaxed overflow-y-auto max-h-[170px]">
-              <div className="flex justify-between border-b border-border-subtle/10 pb-1 mb-2 text-[9px] text-slate-500">
-                <span>HTTP/1.1 {apiResponse.status_code} OK</span>
-                <span className="text-emerald-400 font-bold">Latency: {apiResponse.latency_ms}ms</span>
-              </div>
-              <pre className="text-blue-300 font-bold">{JSON.stringify(apiResponse.payload, null, 2)}</pre>
-            </div>
-          ) : (
-            <p className="text-[10px] text-slate-500 italic text-center pt-4 font-mono">
-              Click the Send button above to hit the FastAPI trigger route and evaluate Pydantic validations.
-            </p>
-          )}
-        </div>
-      </div>
-
-      <div className="flex items-center justify-between border-t border-border-subtle/30 pt-2 mt-3 text-[9px] text-slate-500 font-mono">
-        <span>Throughput: ~14.2K req/sec</span>
-        <span>Framework: FastAPI (v0.110.0)</span>
-      </div>
-    </div>
-  );
-}
-
-function PipelineSimulator() {
-  const [buildLogs, setBuildLogs] = useState<string[]>([
-    "[Job Initialized] Spinning up virtual execution runner...",
-    "▶ Running lint checks: black --check src/ & isort --check-only src/",
-    "✔ Styling checks passed. Running static analysis: mypy src/",
-    "✔ Typings evaluated. Running unit tests: pytest tests/ -v",
-    "▶ 42 Unit tests completed successfully with 100% test coverage.",
-    "⚡ Building secure Docker artifact. Pushed to container registry: build_success_tag ✅"
-  ]);
-  const [buildStatus, setBuildStatus] = useState<'idle' | 'running' | 'success'>('success');
-  const [buildProgress, setBuildProgress] = useState(100);
-
-  const runCIBuild = () => {
-    setBuildStatus('running');
-    setBuildProgress(0);
-    setBuildLogs(["[Job Initialized] Spinning up virtual execution runner..."]);
-
-    const steps = [
-      { prg: 20, log: "▶ Running lint checks: black --check src/ & isort --check-only src/" },
-      { prg: 45, log: "✔ Styling checks passed. Running static analysis: mypy src/" },
-      { prg: 70, log: "✔ Typings evaluated. Running unit tests: pytest tests/ -v" },
-      { prg: 90, log: "▶ 42 Unit tests completed successfully with 100% test coverage." },
-      { prg: 100, log: "⚡ Building secure Docker artifact. Pushed to container registry: build_success_tag ✅" }
-    ];
-
-    steps.forEach((step, idx) => {
-      setTimeout(() => {
-        setBuildProgress(step.prg);
-        setBuildLogs(prev => [...prev, step.log]);
-        if (step.prg === 100) {
-          setBuildStatus('success');
-        }
-      }, (idx + 1) * 500);
-    });
-  };
-
-  return (
-    <div className="rounded-2xl bg-[#040813] border border-violet-500/20 font-mono text-slate-300 flex flex-col justify-between text-left p-4 min-h-[220px] mt-4 shadow-inner">
-      <div>
-        <div className="flex flex-wrap items-center justify-between gap-2 border-b border-border-subtle/20 pb-2 mb-3">
-          <span className="text-[10px] text-slate-500 flex items-center gap-1.5 shrink-0 font-semibold">
-            <GitBranch className="w-3.5 h-3.5 text-violet-400 animate-pulse" /> github_ci_runner.yml
-          </span>
-          <span className="text-[9px] font-mono text-violet-400 uppercase tracking-widest bg-violet-400/5 px-2 py-0.5 rounded border border-violet-400/10 shrink-0 font-semibold">Actions Node</span>
-        </div>
-
-        <div className="relative pt-2 pb-4">
-          <div className="absolute top-[22px] left-[15px] right-[15px] h-[2px] bg-slate-900" />
-          <div 
-            className="absolute top-[22px] left-[15px] h-[2px] bg-gradient-to-r from-violet-500 to-emerald-400 transition-all duration-300"
-            style={{ width: `${buildProgress}%` }}
-          />
-
-          <div className="relative flex justify-between items-center z-10">
-            <div className="flex flex-col items-center gap-1">
-              <div className={`w-8 h-8 rounded-full border flex items-center justify-center transition-colors ${buildProgress >= 20 ? 'bg-violet-950 border-violet-400 text-violet-300' : 'bg-slate-950 border-slate-800 text-slate-500'}`}>
-                <Code className="w-4 h-4" />
-              </div>
-              <span className="text-[9px] text-slate-500">Format</span>
-            </div>
-
-            <div className="flex flex-col items-center gap-1">
-              <div className={`w-8 h-8 rounded-full border flex items-center justify-center transition-colors ${buildProgress >= 45 ? 'bg-violet-950 border-violet-400 text-violet-300' : 'bg-slate-950 border-slate-800 text-slate-500'}`}>
-                <Shield className="w-4 h-4" />
-              </div>
-              <span className="text-[9px] text-slate-500">Mypy</span>
-            </div>
-
-            <div className="flex flex-col items-center gap-1">
-              <div className={`w-8 h-8 rounded-full border flex items-center justify-center transition-colors ${buildProgress >= 70 ? 'bg-emerald-950 border-emerald-500 text-emerald-400' : 'bg-slate-950 border-slate-800 text-slate-500'}`}>
-                <CheckCircle className="w-4 h-4" />
-              </div>
-              <span className="text-[9px] text-emerald-500 font-semibold font-sans">Pytest</span>
-            </div>
-
-            <div className="flex flex-col items-center gap-1">
-              <div className={`w-8 h-8 rounded-full border flex items-center justify-center transition-colors ${buildProgress >= 100 ? 'bg-emerald-950 border-emerald-400 text-emerald-400' : 'bg-slate-950 border-slate-800 text-slate-500'}`}>
-                <Server className="w-4 h-4" />
-              </div>
-              <span className="text-[9px] text-slate-500">Deploy</span>
-            </div>
-          </div>
-        </div>
-
-        <div className="bg-slate-950/95 rounded-xl p-3 border border-border-subtle/20 text-[9px] text-left space-y-1.5 h-[120px] overflow-y-auto font-mono">
-          {buildLogs.map((log, lIdx) => (
-            <p key={lIdx} className={log.includes('✔') || log.includes('✅') ? 'text-emerald-400 font-bold' : 'text-slate-400'}>
-              {log}
-            </p>
-          ))}
-        </div>
-      </div>
-
-      <div className="flex flex-wrap items-center justify-between gap-2 mt-3 pt-2 border-t border-border-subtle/20">
-        <span className="text-[9px] text-slate-500 shrink-0">Runner: hosted-ubuntu-latest</span>
-        <button 
-          onClick={runCIBuild}
-          disabled={buildStatus === 'running'}
-          className={`px-3 py-1 rounded font-bold font-mono text-[10px] flex items-center gap-1.5 cursor-pointer transition-colors shrink-0 ${
-            buildStatus === 'running' 
-              ? 'bg-slate-900 border border-slate-800 text-slate-600 cursor-not-allowed' 
-              : 'bg-violet-500/20 border border-violet-500/40 hover:bg-violet-500/40 text-violet-300'
-          }`}
-        >
-          {buildStatus === 'running' ? (
-            <>
-              <RefreshCw className="w-3.5 h-3.5 animate-spin" /> Building...
-            </>
-          ) : (
-            <>
-              <Play className="w-3 h-3" /> Trigger Pipeline
-            </>
-          )}
-        </button>
-      </div>
-    </div>
-  );
-}
-
-function RagSearch() {
-  const [ragQuery, setRagQuery] = useState('Enterprise autonomous roadmap');
-  const [ragResult, setRagResult] = useState<any>({
-    query_vector_dimensions: 1536,
-    top_similarity_score: 0.942,
-    context_chunks_retrieved: [
-      {
-        id: "doc_chunk_32a",
-        text: "Rajat Krishnan transitioned into AI & Systems. Core experience focus: Python-driven multi-agent workflows, highly optimized FastAPI backends, and modular local generative AI deployments."
-      }
-    ],
-    synthesis: "Based on highly grounded database records, Rajat is a seasoned AI & Systems Engineer with profound capabilities spanning FastAPI, Docker workflows, LangChain semantic systems, and production multi-agent design."
-  });
-  const [ragLoading, setRagLoading] = useState(false);
-
-  const triggerRAGSearch = () => {
-    setRagLoading(true);
-    setRagResult(null);
-    setTimeout(() => {
-      setRagLoading(false);
-      setRagResult({
-        query_vector_dimensions: 1536,
-        top_similarity_score: 0.942,
-        context_chunks_retrieved: [
-          {
-            id: "doc_chunk_32a",
-            text: `Rajat Krishnan transitioned into AI & Systems. Core experience focus: Python-driven multi-agent workflows, highly optimized FastAPI backends, and modular local generative AI deployments matching query: "${ragQuery}".`
-          }
-        ],
-        synthesis: `Based on highly grounded database records, the retrieval engine has analyzed query: "${ragQuery}" and verified that Rajat is a seasoned AI & Systems Engineer with profound capabilities spanning FastAPI, Docker workflows, LangChain semantic systems, and production multi-agent design.`
-      });
-    }, 600);
-  };
-
-  return (
-    <div className="rounded-2xl bg-[#040813] border border-purple-500/20 font-mono text-slate-300 flex flex-col justify-between text-left p-4 min-h-[220px] mt-4 shadow-inner">
-      <div>
-        <div className="flex flex-wrap items-center justify-between gap-2 border-b border-purple-500/20 pb-2 mb-3 font-mono">
-          <span className="text-[10px] text-slate-500 flex items-center gap-1 shrink-0 font-semibold">
-            <Workflow className="w-3.5 h-3.5 text-purple-400" /> document_semantic_rag.py
-          </span>
-          <span className="text-[9px] text-purple-400 bg-purple-400/5 px-2 py-0.5 rounded border border-purple-400/10 shrink-0 font-semibold">Vector Dimension: 1536</span>
-        </div>
-
-        <div className="flex items-center gap-2 mb-3">
-          <div className="flex-grow flex items-center gap-2 bg-slate-950 px-2.5 py-1 rounded-xl border border-border-subtle/40 min-w-0">
-            <Search className="w-3.5 h-3.5 text-purple-400 shrink-0" />
-            <input 
-              type="text" 
-              value={ragQuery} 
-              onChange={(e) => setRagQuery(e.target.value)}
-              className="bg-transparent text-xs text-slate-200 outline-none border-none font-semibold w-full font-mono"
-              placeholder="Enter query to fetch verified context..."
-            />
-          </div>
-          <button 
-            onClick={triggerRAGSearch}
-            className="px-3 py-1 rounded bg-purple-600 hover:bg-purple-500 text-white text-[10px] font-bold cursor-pointer transition-colors shrink-0"
-          >
-            Retrieve
-          </button>
-        </div>
-
-        {ragLoading ? (
-          <div className="flex items-center gap-2 text-slate-500 text-xs italic pt-4 font-mono">
-            <RefreshCw className="w-3.5 h-3.5 animate-spin text-purple-400" /> Slicing documents, mapping embeddings index...
-          </div>
-        ) : ragResult ? (
-          <div className="space-y-2.5 font-mono">
-            <div className="grid grid-cols-2 gap-2 text-[9px]">
-              <div className="p-2 rounded bg-slate-950 border border-purple-500/10">
-                <span className="block text-slate-500 font-bold">TOP METRIC SCORE</span>
-                <span className="text-emerald-400 font-bold text-xs">{ragResult.top_similarity_score} Match</span>
-              </div>
-              <div className="p-2 rounded bg-slate-950 border border-purple-500/10">
-                <span className="block text-slate-500 font-bold">SOURCE CHUNKS</span>
-                <span className="text-purple-400 font-bold text-xs">1 Context Snippet</span>
-              </div>
-            </div>
-
-            <div className="p-2.5 rounded bg-slate-950 border border-[#1e3a8a]/10 max-h-[90px] overflow-y-auto text-[9px] space-y-1.5 leading-normal">
-              <p className="text-purple-300 font-bold">Evaluated Context Chunk:</p>
-              <p className="text-slate-400 italic">"{ragResult.context_chunks_retrieved[0].text}"</p>
-              <p className="text-emerald-400 font-bold pt-1">Grounding Response Synthesized:</p>
-              <p className="text-slate-200">{ragResult.synthesis}</p>
-            </div>
-          </div>
-        ) : (
-          <p className="text-[10px] text-slate-500 italic text-center pt-4 font-mono">
-            Submit a query to evaluate vector database search and grounded prompt synthesis.
-          </p>
-        )}
-      </div>
-
-      <div className="flex flex-wrap items-center justify-between gap-2 border-t border-purple-500/20 pt-2 mt-3 text-[9px] text-slate-500 font-mono">
-        <span className="shrink-0">Database: Pinecone Storage</span>
-        <span className="shrink-0">Model: text-embedding-3-small</span>
-      </div>
-    </div>
-  );
-}
-
-function ChainRunner() {
-  const [chainInput, setChainInput] = useState('Draft an AI strategy memo');
-  const [chainLogs, setChainLogs] = useState<string[]>([
-    "[Step 1] Receieved user instruction: Draft an AI strategy memo",
-    "[Step 2] Contacting DB: Fetching candidate timeline & enterprise experience parameters...",
-    "[Step 3] Contacting GitHub API: Hydrating real-time contributions metric data...",
-    "[Step 4] Injecting context variables into Gemini System prompt template...",
-    "[Step 5] Grounding verified. Requesting generation...",
-    "Result synthesized successfully: Candidate's portfolio timeline and activity validated. Ready for deployment pipeline! ✅"
-  ]);
-  const [chainRunning, setChainRunning] = useState(false);
-
-  const runContextChain = () => {
-    setChainRunning(true);
-    setChainLogs(["[Step 1] Receieved user instruction: " + chainInput]);
-    
-    setTimeout(() => {
-      setChainLogs(prev => [...prev, "[Step 2] Contacting DB: Fetching candidate data..."]);
-    }, 500);
-
-    setTimeout(() => {
-      setChainLogs(prev => [...prev, "[Step 3] Contacting GitHub API: Hydrating contributions..."]);
-    }, 1000);
-
-    setTimeout(() => {
-      setChainLogs(prev => [...prev, "[Step 4] Injecting variables into system template...", "[Step 5] Requesting generation..."]);
-    }, 1500);
-
-    setTimeout(() => {
-      setChainLogs(prev => [...prev, "Result synthesized successfully: Activity validated and ready! ✅"]);
-      setChainRunning(false);
-    }, 2000);
-  };
-
-  return (
-    <div className="rounded-2xl bg-[#090d16] border border-pink-500/20 font-sans flex flex-col justify-between text-left p-4 min-h-[220px] mt-4 shadow-inner">
-      <div>
-        <div className="flex flex-wrap items-center justify-between gap-2 border-b border-border-subtle/30 pb-2 mb-3">
-          <span className="text-[10px] font-mono text-slate-400 shrink-0 font-semibold">CONTEXT_ENRICHMENT_API_ROUTING</span>
-          <span className="text-[9px] font-mono text-pink-400 bg-pink-400/5 px-2 py-0.5 rounded border border-pink-500/10 shrink-0 font-semibold">Chain Execution</span>
-        </div>
-
-        <div className="space-y-3">
-          <div className="flex flex-col sm:flex-row sm:items-center gap-2">
-            <div className="flex items-center gap-2 flex-grow min-w-0">
-              <span className="text-xs font-mono text-slate-400 shrink-0">Prompt Goal:</span>
-              <input 
-                type="text" 
-                value={chainInput} 
-                onChange={(e) => setChainInput(e.target.value)}
-                className="bg-slate-950 px-2 py-1 rounded border border-border-subtle/50 text-xs text-slate-200 outline-none w-full font-mono"
-              />
-            </div>
-            <button 
-              onClick={runContextChain}
-              disabled={chainRunning}
-              className="px-2.5 py-1 rounded bg-pink-600 hover:bg-pink-500 text-white font-mono text-[10px] font-bold cursor-pointer transition-colors shrink-0 self-end sm:self-auto"
-            >
-              Run Chain
-            </button>
-          </div>
-
-          <div className="bg-slate-950 p-2.5 rounded-xl border border-pink-500/10 font-mono text-[9px] text-left leading-relaxed space-y-1.5 h-[110px] overflow-y-auto">
-            {chainLogs.map((log, lIdx) => (
-              <p key={lIdx} className={log.includes('successfully') || log.includes('validated') ? 'text-emerald-400 font-bold' : 'text-slate-400'}>
-                ▶ {log}
-              </p>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      <div className="flex flex-wrap items-center justify-between gap-2 border-t border-border-subtle/30 pt-2 mt-3 text-[9px] text-slate-500 font-mono">
-        <span className="shrink-0">Token Matrix: 100% Deterministic Variables</span>
-        <span className="shrink-0">Model Integration: Gemini 1.5 Flash</span>
-      </div>
-    </div>
-  );
-}
-
-function AgentSandbox() {
-  const [agentObjective, setAgentObjective] = useState('Analyze market competitors');
-  const [agentLogs, setAgentLogs] = useState<string[]>([
-    "[Goal Input] Received instruction: Analyze market competitors",
-    "[Planner Node] Devising recursive strategy...",
-    " - Subtask 1: Crawl historical documents",
-    " - Subtask 2: Match vector embeddings",
-    " - Subtask 3: Cross-audit results via critique agent",
-    "[Tool Runner] Fetching details from system databases...",
-    "[Tool Output] Recieved matching metric documents (Confidence: 0.96)",
-    "[Critique Agent] Verifying output compliance guidelines...",
-    " - Match exact date milestones: VERIFIED",
-    " - Eliminate hallucinations: VALIDATED",
-    " - System flag: PASS",
-    "[Agent Core] Orchestration completed successfully. Returning compiled analysis payload! ✅"
-  ]);
-  const [agentRunning, setAgentRunning] = useState(false);
-  const [agentStep, setAgentStep] = useState(5);
-
-  const triggerAgenticLoop = () => {
-    if (agentRunning) return;
-    setAgentRunning(true);
-    setAgentStep(1);
-    setAgentLogs(["[Goal Input] Received instruction: " + agentObjective]);
-
-    setTimeout(() => {
-      setAgentStep(2);
-      setAgentLogs(prev => [...prev, "[Planner Node] Devising recursive strategy...", " - Subtask 1: Crawl documents", " - Subtask 2: Match embeddings"]);
-    }, 600);
-
-    setTimeout(() => {
-      setAgentStep(3);
-      setAgentLogs(prev => [...prev, "[Tool Runner] Querying databases...", "[Tool Output] Recieved metrics (Confidence: 0.96)"]);
-    }, 1200);
-
-    setTimeout(() => {
-      setAgentStep(4);
-      setAgentLogs(prev => [...prev, "[Critique Agent] Verifying compliance...", " - Eliminate hallucinations: VALIDATED", " - System flag: PASS"]);
-    }, 1800);
-
-    setTimeout(() => {
-      setAgentStep(5);
-      setAgentLogs(prev => [...prev, "[Agent Core] Orchestration completed successfully! ✅"]);
-      setAgentRunning(false);
-    }, 2400);
-  };
-
-  return (
-    <div className="rounded-2xl bg-[#030712] border border-rose-500/20 font-mono text-slate-300 flex flex-col justify-between text-left p-4 min-h-[220px] mt-4 shadow-inner">
-      <div>
-        <div className="flex flex-wrap items-center justify-between gap-2 border-b border-rose-500/20 pb-2 mb-3">
-          <span className="text-[10px] text-slate-500 flex items-center gap-1.5 shrink-0 font-semibold">
-            <Bot className="w-4 h-4 text-rose-400 animate-pulse" /> autonomous_agent_runner.py
-          </span>
-          <span className="text-[9px] text-rose-400 uppercase tracking-widest bg-rose-400/5 px-2 py-0.5 rounded border border-rose-500/10 shrink-0 font-semibold">ReAct Loop</span>
-        </div>
-
-        <div className="flex items-center gap-2 mb-3">
-          <div className="flex-grow flex items-center gap-2 bg-slate-950 px-2.5 py-1 rounded-xl border border-border-subtle/40 min-w-0">
-            <input 
-              type="text" 
-              value={agentObjective} 
-              onChange={(e) => setAgentObjective(e.target.value)}
-              className="bg-transparent text-xs text-slate-200 outline-none border-none font-semibold w-full font-mono"
-              placeholder="Enter objective for the agent..."
-            />
-          </div>
-          <button 
-            onClick={triggerAgenticLoop}
-            disabled={agentRunning}
-            className={`px-3 py-1 rounded font-bold text-[10px] cursor-pointer transition-colors shrink-0 ${
-              agentRunning 
-                ? 'bg-slate-900 border border-slate-800 text-slate-500 cursor-not-allowed' 
-                : 'bg-rose-600 hover:bg-rose-500 text-white'
-            }`}
-          >
-            Execute
-          </button>
-        </div>
-
-        <div className="flex gap-1.5 justify-center py-1 mb-2.5">
-          <span className={`w-2 h-2 rounded-full ${agentStep >= 1 ? 'bg-rose-500 shadow-xs shadow-rose-500/80' : 'bg-slate-800'}`} />
-          <span className={`w-2 h-2 rounded-full ${agentStep >= 2 ? 'bg-orange-500 shadow-xs shadow-orange-500/80' : 'bg-slate-800'}`} />
-          <span className={`w-2 h-2 rounded-full ${agentStep >= 3 ? 'bg-amber-500 shadow-xs shadow-amber-500/80' : 'bg-slate-800'}`} />
-          <span className={`w-2 h-2 rounded-full ${agentStep >= 4 ? 'bg-yellow-500 shadow-xs shadow-yellow-500/80' : 'bg-slate-800'}`} />
-          <span className={`w-2 h-2 rounded-full ${agentStep >= 5 ? 'bg-emerald-500 shadow-xs shadow-emerald-500/80' : 'bg-slate-800'}`} />
-        </div>
-
-        <div className="bg-slate-950/90 rounded-xl p-3 border border-rose-500/10 text-[9px] space-y-1.5 h-[110px] overflow-y-auto font-mono">
-          {agentLogs.map((log, lIdx) => {
-            let colorClass = "text-slate-400";
-            if (log.startsWith("[Goal Input]")) colorClass = "text-rose-400 font-bold";
-            else if (log.startsWith("[Planner Node]")) colorClass = "text-orange-400";
-            else if (log.startsWith("[Tool Runner]")) colorClass = "text-sky-400";
-            else if (log.startsWith("[Critique Agent]")) colorClass = "text-purple-300";
-            else if (log.startsWith("[Agent Core]")) colorClass = "text-emerald-400 font-bold";
-
-            return (
-              <p key={lIdx} className={colorClass}>
-                {log}
-              </p>
-            );
-          })}
-        </div>
-      </div>
-
-      <div className="flex flex-wrap items-center justify-between gap-2 border-t border-rose-500/20 pt-2 mt-3 text-[9px] text-slate-500 font-mono">
-        <span className="shrink-0">Decision Loops: self_reflection = True</span>
-        <span className="shrink-0">Model: Gemini-3.5-flash-agentic</span>
-      </div>
-    </div>
-  );
-}
-
-function FutureVision() {
-  return (
-    <div className="rounded-2xl bg-gradient-to-br from-[#050b1d] to-[#040813] border border-emerald-500/20 font-sans p-4 text-left flex flex-col justify-between min-h-[220px] mt-4 shadow-inner">
-      <div>
-        <div className="flex flex-wrap items-center justify-between gap-2 border-b border-emerald-500/10 pb-2 mb-3">
-          <span className="text-[9px] font-mono text-emerald-400 flex items-center gap-1 font-bold shrink-0">
-            <Sparkles className="w-3.5 h-3.5 text-emerald-400 animate-spin" /> FUTURE_VISION_PORTAL
-          </span>
-          <span className="text-[9px] font-mono text-slate-500 uppercase shrink-0 font-semibold">CAPITAL MINDS AI</span>
-        </div>
-
-        <div className="space-y-3">
-          <h4 className="font-sans text-base sm:text-lg font-bold text-white tracking-tight leading-snug">
-            "Building secure, localized, high-ROI AI orchestration systems for real-world enterprise operations."
-          </h4>
+        {/* OOP domain model container (Left) */}
+        <rect x="20" y="20" width="260" height="280" rx="12" className="fill-slate-50/20 dark:fill-slate-900/10 stroke-slate-200/60 dark:stroke-slate-800/60" strokeWidth="1" />
+        <text x="35" y="42" className="font-mono text-[9px] font-bold fill-text-secondary uppercase tracking-widest">01 // DOMAIN MODELS (PYTHON OOP)</text>
+        
+        {/* Class User */}
+        <g className="svg-card">
+          <rect x="35" y="60" width="230" height="85" rx="10" className="fill-card-bg stroke-slate-200 dark:stroke-slate-800" strokeWidth="1" />
+          <path d="M 35 84 L 265 84" className="stroke-slate-200 dark:stroke-slate-800" strokeWidth="1" />
+          <rect x="35" y="60" width="230" height="24" rx="10" fill="url(#blue-grad)" className="opacity-80" />
+          <text x="48" y="76" className="font-mono text-[10px] font-bold fill-primary-accent">class User(BaseModel):</text>
           
-          <p className="text-xs text-slate-400 leading-relaxed font-sans">
-            Solving the ultimate missing links in traditional generative portfolios: strict local data isolation protocols, zero cloud leaks, and domain-grounded autonomous agents that directly execute high-value workflows.
-          </p>
+          <text x="48" y="102" className="font-mono text-[9px] fill-text-primary">  id: int <tspan className="fill-text-secondary/60"># Primary Key</tspan></text>
+          <text x="48" y="118" className="font-mono text-[9px] fill-text-primary">  email: str <tspan className="fill-text-secondary/60"># Unique Identifier</tspan></text>
+        </g>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-center pt-1.5">
-            <div className="p-2 rounded bg-slate-950/60 border border-slate-800 text-left">
-              <span className="text-[9px] block text-slate-500 uppercase font-mono font-bold">Enterprise ROI Target</span>
-              <span className="text-emerald-400 font-mono font-bold text-xs sm:text-sm leading-none">+85% Automation</span>
-            </div>
-            <div className="p-2 rounded bg-slate-950/60 border border-slate-800 text-left">
-              <span className="text-[9px] block text-slate-500 uppercase font-mono font-bold">Compliance protocol</span>
-              <span className="text-emerald-400 font-mono font-bold text-[10px] leading-none uppercase">ISO-9001 Alignment</span>
-            </div>
-          </div>
-        </div>
+        {/* Class Engineer (Inherits User) */}
+        <g className="svg-card">
+          <rect x="35" y="195" width="230" height="90" rx="10" className="fill-card-bg stroke-slate-200 dark:stroke-slate-800" strokeWidth="1" />
+          <path d="M 35 219 L 265 219" className="stroke-slate-200 dark:stroke-slate-800" strokeWidth="1" />
+          <rect x="35" y="195" width="230" height="24" rx="10" fill="url(#blue-grad)" className="opacity-80" />
+          <text x="48" y="211" className="font-mono text-[10px] font-bold fill-primary-accent">class Engineer(User):</text>
+          
+          <text x="48" y="237" className="font-mono text-[9px] fill-text-primary">  specialization: str</text>
+          <text x="48" y="253" className="font-mono text-[9px] fill-text-primary">  core_stack: list[str]</text>
+          <text x="48" y="269" className="font-mono text-[9px] fill-text-secondary">  def analyze_data() ➔ dict</text>
+        </g>
+
+        {/* Inheritance relation arrow (Left column OOP connection) */}
+        <path d="M 150 195 L 150 151" className="stroke-slate-400 dark:stroke-slate-600 fill-none" strokeWidth="1" markerEnd="url(#arrow-slate)" strokeDasharray="3,3" />
+        <text x="158" y="174" className="font-mono text-[8px] fill-text-secondary uppercase tracking-wider font-semibold">Inheritance</text>
+
+        {/* Database Entities Container (Right) */}
+        <rect x="360" y="20" width="260" height="280" rx="12" className="fill-slate-50/20 dark:fill-slate-900/10 stroke-slate-200/60 dark:stroke-slate-800/60" strokeWidth="1" />
+        <text x="375" y="42" className="font-mono text-[9px] font-bold fill-text-secondary uppercase tracking-widest">02 // ENTITY MODELS (POSTGRESQL)</text>
+
+        {/* Table users */}
+        <g className="svg-card svg-card-right">
+          <rect x="375" y="60" width="230" height="85" rx="10" className="fill-card-bg stroke-slate-200 dark:stroke-slate-800" strokeWidth="1" />
+          <path d="M 375 84 L 605 84" className="stroke-slate-200 dark:stroke-slate-800" strokeWidth="1" />
+          <rect x="375" y="60" width="230" height="24" rx="10" fill="url(#emerald-grad)" className="opacity-80" />
+          <text x="388" y="76" className="font-mono text-[10px] font-bold fill-emerald-500">TABLE: users</text>
+          
+          <text x="388" y="102" className="font-mono text-[9px] fill-emerald-500 font-bold">  id: SERIAL <tspan className="fill-text-secondary font-normal">[PK]</tspan></text>
+          <text x="388" y="118" className="font-mono text-[9px] fill-text-primary">  email: VARCHAR(255) <tspan className="fill-text-secondary/60">UNIQUE</tspan></text>
+        </g>
+
+        {/* Table user_metrics */}
+        <g className="svg-card svg-card-right">
+          <rect x="375" y="195" width="230" height="90" rx="10" className="fill-card-bg stroke-slate-200 dark:stroke-slate-800" strokeWidth="1" />
+          <path d="M 375 219 L 605 219" className="stroke-slate-200 dark:stroke-slate-800" strokeWidth="1" />
+          <rect x="375" y="195" width="230" height="24" rx="10" fill="url(#emerald-grad)" className="opacity-80" />
+          <text x="388" y="211" className="font-mono text-[10px] font-bold fill-emerald-500">TABLE: user_metrics</text>
+          
+          <text x="388" y="237" className="font-mono text-[9px] fill-emerald-500 font-bold">  id: SERIAL <tspan className="fill-text-secondary font-normal">[PK]</tspan></text>
+          <text x="388" y="253" className="font-mono text-[9px] fill-primary-accent font-bold">  user_id: INTEGER <tspan className="fill-text-secondary font-normal">[FK ➔ users.id]</tspan></text>
+          <text x="388" y="269" className="font-mono text-[9px] fill-text-primary">  engagement_coeff: NUMERIC</text>
+        </g>
+
+        {/* Relational foreign key line */}
+        <path d="M 490 145 L 490 195" className="stroke-emerald-500 fill-none" strokeWidth="1.2" />
+        {/* Crows foot notation indicators */}
+        <circle cx="490" cy="149" r="3.5" className="fill-card-bg stroke-emerald-500" strokeWidth="1.2" />
+        <line x1="483" y1="189" x2="497" y2="189" className="stroke-emerald-500" strokeWidth="1.2" />
+        <line x1="490" y1="184" x2="484" y2="191" className="stroke-emerald-500" strokeWidth="1.2" />
+        <line x1="490" y1="184" x2="496" y2="191" className="stroke-emerald-500" strokeWidth="1.2" />
+        <text x="502" y="174" className="font-mono text-[7.5px] fill-emerald-500 font-bold uppercase tracking-wider">1 : N relation</text>
+
+        {/* Horizontal transition flow (Center) */}
+        <path d="M 280 145 Q 320 120 360 145" className="stroke-primary-accent fill-none flow-line" strokeWidth="1.5" markerEnd="url(#arrow-blue)" />
+        <text x="290" y="112" className="font-mono text-[8px] font-extrabold fill-primary-accent uppercase tracking-wider">ORM Serialization</text>
+      </svg>
+      <div className="text-center font-mono text-[10px] text-text-secondary/70 mt-3.5 uppercase font-bold">
+        Designed Normalized Social Analytics database schemas with relational entity modeling
       </div>
+    </div>
+  );
+}
 
-      <div className="flex flex-wrap items-center justify-between gap-2 mt-4 pt-2 border-t border-emerald-500/10 text-[10px] text-slate-500 font-sans">
-        <span className="shrink-0">Primary Sector: Financial/Operational Intelligence</span>
-        <span className="flex items-center gap-0.5 text-emerald-300 font-mono font-bold animate-pulse shrink-0">
-          Initiating Next Phase <ChevronRight className="w-3.5 h-3.5" />
-        </span>
+function BackendApiDiagram() {
+  return (
+    <div className="w-full bg-slate-50/50 dark:bg-slate-900/10 border border-slate-200/50 dark:border-slate-800/40 rounded-2xl p-4 sm:p-6 mt-6 shadow-2xs hover:shadow-xs transition-all duration-300">
+      <div className="flex items-center justify-between border-b border-slate-200/40 dark:border-slate-800/30 pb-2.5 mb-4 font-mono text-[10px] text-text-secondary">
+        <span>API ENDPOINT PIPELINE // ASYNC FLOW</span>
+        <span className="text-secondary-accent font-bold">FASTAPI + PYDANTIC</span>
+      </div>
+      <svg viewBox="0 0 640 240" className="w-full h-auto text-text-primary">
+        <defs>
+          <linearGradient id="primary-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="var(--primary-accent)" stopOpacity="0.1" />
+            <stop offset="100%" stopColor="var(--primary-accent)" stopOpacity="0.01" />
+          </linearGradient>
+          <linearGradient id="emerald-grad-subtle" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#10b981" stopOpacity="0.1" />
+            <stop offset="100%" stopColor="#10b981" stopOpacity="0.01" />
+          </linearGradient>
+          <linearGradient id="amber-grad-subtle" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#d97706" stopOpacity="0.1" />
+            <stop offset="100%" stopColor="#d97706" stopOpacity="0.01" />
+          </linearGradient>
+          <marker id="arrow-blue" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="var(--primary-accent)" />
+          </marker>
+          <marker id="arrow-emerald" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#10b981" />
+          </marker>
+        </defs>
+
+        <style>{`
+          .svg-node-h { transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
+          .svg-node-h:hover { transform: translateY(-2px); filter: drop-shadow(0 8px 16px rgba(0,0,0,0.03)); }
+          .flow-line-h { stroke-dasharray: 6, 4; animation: flow-h 40s linear infinite; }
+          @keyframes flow-h { to { stroke-dashoffset: -1000; } }
+        `}</style>
+
+        {/* Step 1: HTTP Client Request */}
+        <g className="svg-node-h">
+          <rect x="15" y="55" width="105" height="125" rx="12" className="fill-card-bg stroke-slate-200 dark:stroke-slate-800" strokeWidth="1" />
+          <rect x="15" y="55" width="105" height="24" rx="12" fill="url(#primary-grad)" />
+          <path d="M 15 79 L 120 79" className="stroke-slate-200 dark:stroke-slate-800" strokeWidth="1" />
+          <text x="25" y="70" className="font-mono text-[9px] font-bold fill-primary-accent uppercase tracking-wider">01 // CLIENT</text>
+          
+          <text x="25" y="101" className="font-mono text-[9px] fill-text-primary font-bold">POST Request</text>
+          <text x="25" y="117" className="font-mono text-[8px] fill-primary-accent font-bold">/v1/user</text>
+          <text x="25" y="133" className="font-mono text-[8px] fill-text-secondary">Payload: JSON</text>
+          <text x="25" y="149" className="font-mono text-[8px] fill-text-secondary">User-Agent: Client</text>
+        </g>
+
+        {/* Connection 1 ➔ 2 */}
+        <path d="M 120 117 L 138 117" className="stroke-primary-accent flow-line-h" strokeWidth="1.2" markerEnd="url(#arrow-blue)" />
+
+        {/* Step 2: FastAPI Router / CORS Middleware */}
+        <g className="svg-node-h">
+          <rect x="138" y="55" width="110" height="125" rx="12" className="fill-card-bg stroke-slate-200 dark:stroke-slate-800" strokeWidth="1" />
+          <rect x="138" y="55" width="110" height="24" rx="12" fill="url(#primary-grad)" />
+          <path d="M 138 79 L 248 79" className="stroke-slate-200 dark:stroke-slate-800" strokeWidth="1" />
+          <text x="148" y="70" className="font-mono text-[9px] font-bold fill-primary-accent uppercase tracking-wider">02 // FASTAPI</text>
+          
+          <text x="148" y="101" className="font-mono text-[9px] fill-text-primary font-bold">Router Match</text>
+          <text x="148" y="117" className="font-mono text-[8px] fill-secondary-accent">async def...</text>
+          <text x="148" y="133" className="font-mono text-[8px] fill-text-secondary">Auth JWT Check</text>
+          <text x="148" y="149" className="font-mono text-[8px] fill-text-secondary">Thread Pool OS</text>
+        </g>
+
+        {/* Connection 2 ➔ 3 */}
+        <path d="M 248 117 L 268 117" className="stroke-primary-accent flow-line-h" strokeWidth="1.2" markerEnd="url(#arrow-blue)" />
+
+        {/* Step 3: Pydantic Schema Validation */}
+        <g className="svg-node-h">
+          <rect x="268" y="55" width="110" height="125" rx="12" className="fill-card-bg stroke-slate-200 dark:stroke-slate-800" strokeWidth="1" />
+          <rect x="268" y="55" width="110" height="24" rx="12" fill="url(#amber-grad-subtle)" />
+          <path d="M 268 79 L 378 79" className="stroke-slate-200 dark:stroke-slate-800" strokeWidth="1" />
+          <text x="278" y="70" className="font-mono text-[9px] font-bold fill-amber-600 dark:fill-amber-400 uppercase tracking-wider">03 // PYDANTIC</text>
+          
+          <text x="278" y="101" className="font-mono text-[9px] fill-text-primary font-bold">Data Validation</text>
+          <text x="278" y="117" className="font-mono text-[8px] fill-amber-600 dark:fill-amber-400 font-bold">Strict Type Guard</text>
+          <text x="278" y="133" className="font-mono text-[8px] fill-text-secondary">Fail-fast (422)</text>
+          <text x="278" y="149" className="font-mono text-[8px] fill-emerald-500 font-bold">Validated ✓</text>
+        </g>
+
+        {/* Connection 3 ➔ 4 */}
+        <path d="M 378 117 L 398 117" className="stroke-emerald-500 flow-line-h" strokeWidth="1.2" markerEnd="url(#arrow-emerald)" />
+
+        {/* Step 4: SQLAlchemy Async Sessions */}
+        <g className="svg-node-h">
+          <rect x="398" y="55" width="110" height="125" rx="12" className="fill-card-bg stroke-slate-200 dark:stroke-slate-800" strokeWidth="1" />
+          <rect x="398" y="55" width="110" height="24" rx="12" fill="url(#primary-grad)" />
+          <path d="M 398 79 L 508 79" className="stroke-slate-200 dark:stroke-slate-800" strokeWidth="1" />
+          <text x="408" y="70" className="font-mono text-[9px] font-bold fill-primary-accent uppercase tracking-wider">04 // ORM</text>
+          
+          <text x="408" y="101" className="font-mono text-[9px] fill-text-primary font-bold">SQLAlchemy</text>
+          <text x="408" y="117" className="font-mono text-[8px] fill-secondary-accent">async_session</text>
+          <text x="408" y="133" className="font-mono text-[8px] fill-text-secondary">Transaction Map</text>
+          <text x="408" y="149" className="font-mono text-[8px] fill-text-secondary">Engine Pool</text>
+        </g>
+
+        {/* Connection 4 ➔ 5 */}
+        <path d="M 508 117 L 528 117" className="stroke-primary-accent flow-line-h" strokeWidth="1.2" markerEnd="url(#arrow-blue)" />
+
+        {/* Step 5: PostgreSQL ACID Transaction Commit */}
+        <g className="svg-node-h">
+          <rect x="528" y="55" width="95" height="125" rx="12" className="fill-card-bg stroke-slate-200 dark:stroke-slate-800" strokeWidth="1" />
+          <rect x="528" y="55" width="95" height="24" rx="12" fill="url(#emerald-grad-subtle)" />
+          <path d="M 528 79 L 623 79" className="stroke-slate-200 dark:stroke-slate-800" strokeWidth="1" />
+          <text x="538" y="70" className="font-mono text-[9px] font-bold fill-emerald-500 uppercase tracking-wider">05 // POSTGRES</text>
+          
+          <text x="538" y="101" className="font-mono text-[9px] fill-text-primary font-bold">ACID Commit</text>
+          <text x="538" y="117" className="font-mono text-[8px] fill-emerald-500 font-bold">COMMIT SUCCESS</text>
+          <text x="538" y="133" className="font-mono text-[8px] fill-text-secondary">State Persisted</text>
+          <text x="538" y="149" className="font-mono text-[8px] fill-text-secondary">201 Created</text>
+        </g>
+      </svg>
+      <div className="text-center font-mono text-[10px] text-text-secondary/70 mt-3.5 uppercase font-bold">
+        End-to-end type safety mapping: client request ➔ async fastapi router ➔ schema validation ➔ model serialization
+      </div>
+    </div>
+  );
+}
+
+function ServerlessIngestionDiagram() {
+  return (
+    <div className="w-full bg-slate-50/50 dark:bg-slate-900/10 border border-slate-200/50 dark:border-slate-800/40 rounded-2xl p-4 sm:p-6 mt-6 shadow-2xs hover:shadow-xs transition-all duration-300">
+      <div className="flex items-center justify-between border-b border-slate-200/40 dark:border-slate-800/30 pb-2.5 mb-4 font-mono text-[10px] text-text-secondary">
+        <span>ETL SERVERLESS PIPELINE // STREAM INGESTION</span>
+        <span className="text-primary-accent font-bold">AWS DATA ARCHITECTURE</span>
+      </div>
+      <svg viewBox="0 0 640 240" className="w-full h-auto text-text-primary">
+        <defs>
+          <linearGradient id="blue-grad-subtle" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="var(--primary-accent)" stopOpacity="0.1" />
+            <stop offset="100%" stopColor="var(--primary-accent)" stopOpacity="0.01" />
+          </linearGradient>
+          <linearGradient id="emerald-grad-subtle" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#10b981" stopOpacity="0.1" />
+            <stop offset="100%" stopColor="#10b981" stopOpacity="0.01" />
+          </linearGradient>
+          <linearGradient id="amber-grad-subtle" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#d97706" stopOpacity="0.1" />
+            <stop offset="100%" stopColor="#d97706" stopOpacity="0.01" />
+          </linearGradient>
+          <marker id="arrow-blue" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="var(--primary-accent)" />
+          </marker>
+        </defs>
+
+        <style>{`
+          .svg-node-s { transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
+          .svg-node-s:hover { transform: translateY(-2px); filter: drop-shadow(0 8px 16px rgba(0,0,0,0.03)); }
+          .flow-line-s { stroke-dasharray: 6, 4; animation: flow-s 40s linear infinite; }
+          @keyframes flow-s { to { stroke-dashoffset: -1000; } }
+        `}</style>
+
+        {/* Step 1: EventBridge Cron */}
+        <g className="svg-node-s">
+          <rect x="15" y="55" width="105" height="125" rx="12" className="fill-card-bg stroke-slate-200 dark:stroke-slate-800" strokeWidth="1" />
+          <rect x="15" y="55" width="105" height="24" rx="12" fill="url(#amber-grad-subtle)" />
+          <path d="M 15 79 L 120 79" className="stroke-slate-200 dark:stroke-slate-800" strokeWidth="1" />
+          <text x="25" y="70" className="font-mono text-[9px] font-bold fill-amber-600 dark:fill-amber-400 uppercase tracking-wider">01 // TRIGGER</text>
+          
+          <text x="25" y="101" className="font-mono text-[9px] fill-text-primary font-bold">EventBridge</text>
+          <text x="25" y="117" className="font-mono text-[8px] fill-amber-600 dark:fill-amber-400 font-bold">Hourly Cron</text>
+          <text x="25" y="133" className="font-mono text-[8px] fill-text-secondary">Rule: rate(1 hr)</text>
+          <text x="25" y="149" className="font-mono text-[8px] fill-text-secondary">JSON payload</text>
+        </g>
+
+        {/* Connection 1 ➔ 2 */}
+        <path d="M 120 117 L 138 117" className="stroke-primary-accent flow-line-s" strokeWidth="1.2" markerEnd="url(#arrow-blue)" />
+
+        {/* Step 2: AWS Lambda Executing Python Script */}
+        <g className="svg-node-s">
+          <rect x="138" y="55" width="110" height="125" rx="12" className="fill-card-bg stroke-slate-200 dark:stroke-slate-800" strokeWidth="1" />
+          <rect x="138" y="55" width="110" height="24" rx="12" fill="url(#blue-grad-subtle)" />
+          <path d="M 138 79 L 248 79" className="stroke-slate-200 dark:stroke-slate-800" strokeWidth="1" />
+          <text x="148" y="70" className="font-mono text-[9px] font-bold fill-primary-accent uppercase tracking-wider">02 // INGESTION</text>
+          
+          <text x="148" y="101" className="font-mono text-[9px] fill-text-primary font-bold">AWS Lambda (Py)</text>
+          <text x="148" y="117" className="font-mono text-[8px] fill-secondary-accent font-bold">Container Exec</text>
+          <text x="148" y="133" className="font-mono text-[8px] fill-text-secondary">Spotify API fetch</text>
+          <text x="148" y="149" className="font-mono text-[8px] fill-text-secondary">Chunk Stream parsing</text>
+        </g>
+
+        {/* Connection 2 ➔ 3 */}
+        <path d="M 248 117 L 268 117" className="stroke-primary-accent flow-line-s" strokeWidth="1.2" markerEnd="url(#arrow-blue)" />
+
+        {/* Step 3: Amazon S3 Parquet Lakehouse Data Partitioning */}
+        <g className="svg-node-s">
+          <rect x="268" y="55" width="110" height="125" rx="12" className="fill-card-bg stroke-slate-200 dark:stroke-slate-800" strokeWidth="1" />
+          <rect x="268" y="55" width="110" height="24" rx="12" fill="url(#blue-grad-subtle)" />
+          <path d="M 268 79 L 378 79" className="stroke-slate-200 dark:stroke-slate-800" strokeWidth="1" />
+          <text x="278" y="70" className="font-mono text-[9px] font-bold fill-primary-accent uppercase tracking-wider">03 // STORAGE</text>
+          
+          <text x="278" y="101" className="font-mono text-[9px] fill-text-primary font-bold">Amazon S3 Lake</text>
+          <text x="278" y="117" className="font-mono text-[8px] fill-primary-accent font-bold">Parquet Partition</text>
+          <text x="278" y="133" className="font-mono text-[8px] fill-text-secondary">dt=YYYY-MM-DD</text>
+          <text x="278" y="149" className="font-mono text-[8px] fill-text-secondary">Columnar format</text>
+        </g>
+
+        {/* Connection 3 ➔ 4 */}
+        <path d="M 378 117 L 398 117" className="stroke-primary-accent flow-line-s" strokeWidth="1.2" markerEnd="url(#arrow-blue)" />
+
+        {/* Step 4: AWS Glue Catalog Discovery */}
+        <g className="svg-node-s">
+          <rect x="398" y="55" width="110" height="125" rx="12" className="fill-card-bg stroke-slate-200 dark:stroke-slate-800" strokeWidth="1" />
+          <rect x="398" y="55" width="110" height="24" rx="12" fill="url(#blue-grad-subtle)" />
+          <path d="M 398 79 L 508 79" className="stroke-slate-200 dark:stroke-slate-800" strokeWidth="1" />
+          <text x="408" y="70" className="font-mono text-[9px] font-bold fill-primary-accent uppercase tracking-wider">04 // CATALOG</text>
+          
+          <text x="408" y="101" className="font-mono text-[9px] fill-text-primary font-bold">AWS Glue Crawler</text>
+          <text x="408" y="117" className="font-mono text-[8px] fill-secondary-accent">Schema Detection</text>
+          <text x="408" y="133" className="font-mono text-[8px] fill-text-secondary">Update partition</text>
+          <text x="408" y="149" className="font-mono text-[8px] fill-text-secondary">Glue Meta Data catalog</text>
+        </g>
+
+        {/* Connection 4 ➔ 5 */}
+        <path d="M 508 117 L 528 117" className="stroke-primary-accent flow-line-s" strokeWidth="1.2" markerEnd="url(#arrow-blue)" />
+
+        {/* Step 5: AWS Athena Querying */}
+        <g className="svg-node-s">
+          <rect x="528" y="55" width="95" height="125" rx="12" className="fill-card-bg stroke-slate-200 dark:stroke-slate-800" strokeWidth="1" />
+          <rect x="528" y="55" width="95" height="24" rx="12" fill="url(#emerald-grad-subtle)" />
+          <path d="M 528 79 L 623 79" className="stroke-slate-200 dark:stroke-slate-800" strokeWidth="1" />
+          <text x="538" y="70" className="font-mono text-[9px] font-bold fill-emerald-500 uppercase tracking-wider">05 // QUERY</text>
+          
+          <text x="538" y="101" className="font-mono text-[9px] fill-text-primary font-bold">AWS Athena</text>
+          <text x="538" y="117" className="font-mono text-[8px] fill-emerald-500 font-bold">Serverless SQL</text>
+          <text x="538" y="133" className="font-mono text-[8px] fill-text-secondary">Ad-hoc Analytics</text>
+          <text x="538" y="149" className="font-mono text-[8px] fill-text-secondary">Pay-per-query</text>
+        </g>
+      </svg>
+      <div className="text-center font-mono text-[10px] text-text-secondary/70 mt-3.5 uppercase font-bold">
+        Spotify Serverless Stream Pipeline: Event scheduling ➔ stream parsing ➔ partitioned S3 storage ➔ metadata crawler
+      </div>
+    </div>
+  );
+}
+
+function SemanticRagDiagram() {
+  return (
+    <div className="w-full bg-slate-50/50 dark:bg-slate-900/10 border border-slate-200/50 dark:border-slate-800/40 rounded-2xl p-4 sm:p-6 mt-6 shadow-2xs hover:shadow-xs transition-all duration-300">
+      <div className="flex items-center justify-between border-b border-slate-200/40 dark:border-slate-800/30 pb-2.5 mb-4 font-mono text-[10px] text-text-secondary">
+        <span>RAG SEMANTIC RETRIEVAL // DOCUMENT GROUNDING</span>
+        <span className="text-primary-accent font-bold">VECTOR EMBEDDING WORKFLOW</span>
+      </div>
+      <svg viewBox="0 0 640 320" className="w-full h-auto text-text-primary">
+        <defs>
+          <linearGradient id="blue-grad-r" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="var(--primary-accent)" stopOpacity="0.1" />
+            <stop offset="100%" stopColor="var(--primary-accent)" stopOpacity="0.01" />
+          </linearGradient>
+          <linearGradient id="emerald-grad-r" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#10b981" stopOpacity="0.1" />
+            <stop offset="100%" stopColor="#10b981" stopOpacity="0.01" />
+          </linearGradient>
+          <linearGradient id="amber-grad-r" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#d97706" stopOpacity="0.1" />
+            <stop offset="100%" stopColor="#d97706" stopOpacity="0.01" />
+          </linearGradient>
+          <marker id="arrow-blue" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="var(--primary-accent)" />
+          </marker>
+          <marker id="arrow-emerald" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#10b981" />
+          </marker>
+          <marker id="arrow-amber" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#d97706" />
+          </marker>
+        </defs>
+
+        <style>{`
+          .svg-node-r { transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
+          .svg-node-r:hover { transform: translateY(-1.5px); filter: drop-shadow(0 10px 18px rgba(0,0,0,0.03)); }
+          .flow-line-r { stroke-dasharray: 6, 4; animation: flow-r 35s linear infinite; }
+          @keyframes flow-r { to { stroke-dashoffset: -1000; } }
+        `}</style>
+
+        {/* Lane 1: Cold Document Ingestion Pipeline */}
+        <rect x="15" y="15" width="460" height="130" rx="12" className="fill-slate-50/10 dark:fill-slate-900/10 stroke-slate-200/60 dark:stroke-slate-800/40" strokeWidth="1" />
+        <text x="30" y="35" className="font-mono text-[8px] font-bold fill-primary-accent uppercase tracking-widest">PROCESS 01 // HIGH-FIDELITY DOCUMENT INDEXING</text>
+
+        {/* PDF Block */}
+        <g className="svg-node-r">
+          <rect x="30" y="50" width="115" height="75" rx="8" className="fill-card-bg stroke-slate-200 dark:stroke-slate-800" strokeWidth="1" />
+          <rect x="30" y="50" width="115" height="20" rx="8" fill="url(#blue-grad-r)" />
+          <text x="40" y="63" className="font-mono text-[9px] font-bold fill-primary-accent">1A // SEC FILING PDF</text>
+          <text x="40" y="88" className="font-mono text-[9px] fill-text-primary font-bold">Financial Statement</text>
+          <text x="40" y="104" className="font-mono text-[8px] fill-text-secondary">Unstructured text layers</text>
+        </g>
+
+        {/* Arrow 1A ➔ 1B */}
+        <path d="M 145 88 L 165 88" className="stroke-primary-accent flow-line-r" strokeWidth="1.2" markerEnd="url(#arrow-blue)" />
+
+        {/* Semantic Chunking Block */}
+        <g className="svg-node-r">
+          <rect x="165" y="50" width="130" height="75" rx="8" className="fill-card-bg stroke-slate-200 dark:stroke-slate-800" strokeWidth="1" />
+          <rect x="165" y="50" width="130" height="20" rx="8" fill="url(#amber-grad-r)" />
+          <text x="175" y="63" className="font-mono text-[9px] font-bold fill-amber-600 dark:fill-amber-400">1B // SPLITTER</text>
+          <text x="175" y="88" className="font-mono text-[9px] fill-text-primary font-bold">Semantic Chunking</text>
+          <text x="175" y="104" className="font-mono text-[8px] fill-amber-600 dark:fill-amber-400 font-bold">Recursive Parser</text>
+        </g>
+
+        {/* Arrow 1B ➔ 1C */}
+        <path d="M 295 88 L 315 88" className="stroke-primary-accent flow-line-r" strokeWidth="1.2" markerEnd="url(#arrow-blue)" />
+
+        {/* Text Embeddings calculation block */}
+        <g className="svg-node-r">
+          <rect x="315" y="50" width="140" height="75" rx="8" className="fill-card-bg stroke-slate-200 dark:stroke-slate-800" strokeWidth="1" />
+          <rect x="315" y="50" width="140" height="20" rx="8" fill="url(#blue-grad-r)" />
+          <text x="325" y="63" className="font-mono text-[9px] font-bold fill-primary-accent">1C // EMBEDDING</text>
+          <text x="325" y="88" className="font-mono text-[9px] fill-text-primary font-bold">text-embedding-3</text>
+          <text x="325" y="104" className="font-mono text-[8px] fill-text-secondary">1536-Dimensional Vector</text>
+        </g>
+
+        {/* Curve Connection 1C ➔ DB */}
+        <path d="M 455 88 Q 500 88 500 135" className="stroke-primary-accent fill-none" strokeWidth="1.2" markerEnd="url(#arrow-blue)" />
+
+        {/* PGVector Database Storage (Right block) */}
+        <g className="svg-node-r">
+          <rect x="500" y="90" width="125" height="135" rx="12" className="fill-card-bg stroke-emerald-500/30 dark:stroke-emerald-500/10" strokeWidth="1.5" />
+          <rect x="500" y="90" width="125" height="24" rx="12" fill="url(#emerald-grad-r)" />
+          <path d="M 500 114 L 625 114" className="stroke-emerald-500/20" strokeWidth="1" />
+          <text x="510" y="105" className="font-mono text-[9px] font-bold fill-emerald-500 uppercase tracking-wider">PGVECTOR STORE</text>
+          
+          <text x="510" y="133" className="font-mono text-[9px] fill-text-primary font-bold">HNSW Graph Index</text>
+          <text x="510" y="149" className="font-mono text-[8px] fill-text-secondary">Coordinate Nodes</text>
+          <text x="510" y="165" className="font-mono text-[8px] fill-emerald-500 font-bold">Cosine distance</text>
+          <text x="510" y="181" className="font-mono text-[7.5px] fill-text-secondary font-mono">[0.124, -0.92, ...]</text>
+          <text x="510" y="197" className="font-mono text-[8px] fill-text-secondary">Metadata grounding</text>
+        </g>
+
+        {/* Lane 2: Real-time Grounded Query Loop */}
+        <rect x="15" y="165" width="460" height="140" rx="12" className="fill-slate-50/10 dark:fill-slate-900/10 stroke-slate-200/60 dark:stroke-slate-800/40" strokeWidth="1" />
+        <text x="30" y="185" className="font-mono text-[8px] font-bold fill-amber-600 dark:fill-amber-400 uppercase tracking-widest">PROCESS 02 // DYNAMIC QUERY RETRIEVAL & GROUNDING</text>
+
+        {/* User Query Block */}
+        <g className="svg-node-r">
+          <rect x="30" y="200" width="115" height="80" rx="8" className="fill-card-bg stroke-slate-200 dark:stroke-slate-800" strokeWidth="1" />
+          <rect x="30" y="200" width="115" height="20" rx="8" fill="url(#blue-grad-r)" />
+          <text x="40" y="213" className="font-mono text-[9px] font-bold fill-primary-accent">2A // USER QUERY</text>
+          <text x="40" y="238" className="font-mono text-[9px] fill-text-primary font-bold">"What is Q3 ARR?"</text>
+          <text x="40" y="254" className="font-mono text-[8px] fill-text-secondary">Natural language</text>
+        </g>
+
+        {/* Arrow 2A ➔ 2B */}
+        <path d="M 145 240 L 165 240" className="stroke-primary-accent flow-line-r" strokeWidth="1.2" markerEnd="url(#arrow-blue)" />
+
+        {/* Vector Similarity Query Block */}
+        <g className="svg-node-r">
+          <rect x="165" y="200" width="130" height="80" rx="8" className="fill-card-bg stroke-slate-200 dark:stroke-slate-800" strokeWidth="1" />
+          <rect x="165" y="200" width="130" height="20" rx="8" fill="url(#blue-grad-r)" />
+          <text x="175" y="213" className="font-mono text-[9px] font-bold fill-primary-accent">2B // VECTOR SEARCH</text>
+          <text x="175" y="238" className="font-mono text-[9px] fill-text-primary font-bold">Similarity Query</text>
+          <text x="175" y="254" className="font-mono text-[8px] fill-primary-accent">Cosine Similarity</text>
+        </g>
+
+        {/* Arrow 2B ➔ PGVector */}
+        <path d="M 295 240 L 490 240" className="stroke-primary-accent flow-line-r" strokeWidth="1.2" markerEnd="url(#arrow-blue)" strokeDasharray="3,3" />
+        <text x="325" y="232" className="font-mono text-[7px] fill-primary-accent font-bold uppercase tracking-wider">ANN Nearest Search</text>
+
+        {/* Return matched Context from PGVector ➔ Prompt Synthesis */}
+        <path d="M 500 200 L 420 200 Q 400 200 400 220 L 400 230" className="stroke-emerald-500 fill-none" strokeWidth="1.2" markerEnd="url(#arrow-emerald)" />
+        <text x="340" y="193" className="font-mono text-[7px] fill-emerald-500 font-bold uppercase tracking-wider">Grounded Context</text>
+
+        {/* Prompt Synthesis Block */}
+        <g className="svg-node-r">
+          <rect x="345" y="230" width="115" height="50" rx="8" className="fill-card-bg stroke-emerald-500/30 dark:stroke-emerald-500/10" strokeWidth="1" />
+          <rect x="345" y="230" width="115" height="14" rx="8" fill="url(#emerald-grad-r)" />
+          <text x="353" y="241" className="font-mono text-[8px] font-bold fill-emerald-500">2C // SYNTHESIS</text>
+          <text x="353" y="257" className="font-mono text-[8.5px] fill-text-primary font-bold">Context Grounded</text>
+          <text x="353" y="269" className="font-mono text-[7px] fill-text-secondary">Synthesized Output</text>
+        </g>
+      </svg>
+      <div className="text-center font-mono text-[10px] text-text-secondary/70 mt-3.5 uppercase font-bold">
+        Advanced Retrieval loop: documents split semantically ➔ indexed in vector database ➔ nearest-neighbor query validation
+      </div>
+    </div>
+  );
+}
+
+function MultiAgentDiagram() {
+  return (
+    <div className="w-full bg-slate-50/50 dark:bg-slate-900/10 border border-slate-200/50 dark:border-slate-800/40 rounded-2xl p-4 sm:p-6 mt-6 shadow-2xs hover:shadow-xs transition-all duration-300">
+      <div className="flex items-center justify-between border-b border-slate-200/40 dark:border-slate-800/30 pb-2.5 mb-4 font-mono text-[10px] text-text-secondary">
+        <span>STATE-MACHINE AGENTIC WORKFLOW // LANGGRAPH</span>
+        <span className="text-primary-accent font-bold">COGNITIVE MULTI-AGENT LOOP</span>
+      </div>
+      <svg viewBox="0 0 640 320" className="w-full h-auto text-text-primary">
+        <defs>
+          <linearGradient id="blue-grad-a" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="var(--primary-accent)" stopOpacity="0.1" />
+            <stop offset="100%" stopColor="var(--primary-accent)" stopOpacity="0.01" />
+          </linearGradient>
+          <linearGradient id="emerald-grad-a" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#10b981" stopOpacity="0.1" />
+            <stop offset="100%" stopColor="#10b981" stopOpacity="0.01" />
+          </linearGradient>
+          <linearGradient id="amber-grad-a" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#d97706" stopOpacity="0.1" />
+            <stop offset="100%" stopColor="#d97706" stopOpacity="0.01" />
+          </linearGradient>
+          <marker id="arrow-blue" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="var(--primary-accent)" />
+          </marker>
+          <marker id="arrow-emerald" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#10b981" />
+          </marker>
+          <marker id="arrow-amber" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#d97706" />
+          </marker>
+        </defs>
+
+        <style>{`
+          .svg-node-a { transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
+          .svg-node-a:hover { transform: translateY(-1.5px); filter: drop-shadow(0 10px 18px rgba(0,0,0,0.03)); }
+          .flow-line-a { stroke-dasharray: 6, 4; animation: flow-a 35s linear infinite; }
+          @keyframes flow-a { to { stroke-dashoffset: -1000; } }
+        `}</style>
+
+        {/* Left Block: User Goal */}
+        <g className="svg-node-a">
+          <rect x="20" y="125" width="110" height="70" rx="8" className="fill-card-bg stroke-slate-200 dark:stroke-slate-800" strokeWidth="1" />
+          <rect x="20" y="125" width="110" height="18" rx="8" fill="url(#blue-grad-a)" />
+          <text x="28" y="137" className="font-mono text-[8px] font-bold fill-primary-accent">01 // USER INPUT</text>
+          <text x="28" y="157" className="font-mono text-[9px] fill-text-primary font-bold">Goal / Objective</text>
+          <text x="28" y="172" className="font-mono text-[8px] fill-text-secondary">"Extract Q3 data"</text>
+          <text x="28" y="184" className="font-mono text-[7px] fill-text-secondary">LangGraph Entry</text>
+        </g>
+
+        {/* Connection User ➔ Planner */}
+        <path d="M 130 160 L 175 160" className="stroke-primary-accent flow-line-a" strokeWidth="1.2" markerEnd="url(#arrow-blue)" />
+
+        {/* Agent 1: Planner Agent (Top Middle) */}
+        <g className="svg-node-a">
+          <rect x="175" y="35" width="135" height="75" rx="10" className="fill-card-bg stroke-slate-200 dark:stroke-slate-800" strokeWidth="1" />
+          <rect x="175" y="35" width="135" height="20" rx="10" fill="url(#blue-grad-a)" />
+          <text x="185" y="48" className="font-mono text-[9px] font-bold fill-primary-accent">02 // PLANNER AGENT</text>
+          <text x="185" y="71" className="font-mono text-[9px] fill-text-primary font-bold">Deconstructs Goal</text>
+          <text x="185" y="85" className="font-mono text-[8px] fill-text-secondary">Formulates sub-tasks</text>
+          <text x="185" y="97" className="font-mono text-[7.5px] fill-text-secondary">Dynamic Task Schema</text>
+        </g>
+
+        {/* Connection Planner ➔ Executor */}
+        <path d="M 310 72 Q 380 72 380 125" className="stroke-primary-accent fill-none flow-line-a" strokeWidth="1.2" markerEnd="url(#arrow-blue)" />
+
+        {/* Agent 2: Tool Executor (Middle Right) */}
+        <g className="svg-node-a">
+          <rect x="345" y="125" width="135" height="75" rx="10" className="fill-card-bg stroke-slate-200 dark:stroke-slate-800" strokeWidth="1" />
+          <rect x="345" y="125" width="135" height="20" rx="10" fill="url(#blue-grad-a)" />
+          <text x="355" y="138" className="font-mono text-[9px] font-bold fill-primary-accent">03 // TOOL EXECUTOR</text>
+          <text x="355" y="161" className="font-mono text-[9px] fill-text-primary font-bold">Invokes SQL & APIs</text>
+          <text x="355" y="175" className="font-mono text-[8px] fill-text-secondary">Retrieves dynamic data</text>
+          <text x="355" y="187" className="font-mono text-[7.5px] fill-text-secondary">Function Checkpoint</text>
+        </g>
+
+        {/* Connection Executor ➔ Validator */}
+        <path d="M 412 200 Q 412 252 310 252" className="stroke-primary-accent fill-none flow-line-a" strokeWidth="1.2" markerEnd="url(#arrow-blue)" />
+
+        {/* Agent 3: Validator / Critic (Bottom Middle) */}
+        <g className="svg-node-a">
+          <rect x="175" y="215" width="135" height="75" rx="10" className="fill-card-bg stroke-slate-200 dark:stroke-slate-800" strokeWidth="1" />
+          <rect x="175" y="215" width="135" height="20" rx="10" fill="url(#amber-grad-a)" />
+          <text x="185" y="228" className="font-mono text-[9px] font-bold fill-amber-600 dark:fill-amber-400">04 // VALIDATOR AGENT</text>
+          <text x="185" y="251" className="font-mono text-[9px] fill-text-primary font-bold">Audits Hallucinations</text>
+          <text x="185" y="265" className="font-mono text-[8px] fill-amber-600 dark:fill-amber-400 font-bold">Strict Schema Check</text>
+          <text x="185" y="277" className="font-mono text-[7.5px] fill-text-secondary">Pass/Fail verification</text>
+        </g>
+
+        {/* STATE SELF-CORRECTION LOOP: Validator ➔ Planner (Dashed path indicating self-correction feedback loop) */}
+        <path d="M 242 215 L 242 110" className="stroke-amber-600/80 dark:stroke-amber-400/80 fill-none" strokeWidth="1.2" strokeDasharray="3,3" markerEnd="url(#arrow-amber)" />
+        <text x="250" y="160" className="font-mono text-[7.5px] fill-amber-600 dark:fill-amber-400 font-bold uppercase tracking-wider">Critique & Self-Correction</text>
+
+        {/* Connection Validator ➔ Output */}
+        <path d="M 310 252 Q 530 252 530 195" className="stroke-emerald-500 fill-none" strokeWidth="1.2" markerEnd="url(#arrow-emerald)" />
+        <text x="355" y="244" className="font-mono text-[7.5px] fill-emerald-500 font-bold uppercase tracking-wider">If Schema Compliant</text>
+
+        {/* Compliant Structured Output (Right Block) */}
+        <g className="svg-node-a">
+          <rect x="505" y="125" width="115" height="70" rx="8" className="fill-card-bg stroke-emerald-500/30 dark:stroke-emerald-500/10" strokeWidth="1.5" />
+          <rect x="505" y="125" width="115" height="18" rx="8" fill="url(#emerald-grad-a)" />
+          <text x="513" y="137" className="font-mono text-[8px] font-bold fill-emerald-500">05 // COMPLIANT OUT</text>
+          <text x="513" y="157" className="font-mono text-[9px] fill-text-primary font-bold">Structured Report</text>
+          <text x="513" y="172" className="font-mono text-[8px] fill-emerald-500 font-bold">100% VALIDATED ✓</text>
+          <text x="513" y="184" className="font-mono text-[7px] fill-text-secondary">Output Node Commit</text>
+        </g>
+      </svg>
+      <div className="text-center font-mono text-[10px] text-text-secondary/70 mt-3.5 uppercase font-bold">
+        Stateful LangGraph planning cycle: Planner tasking ➔ Executor querying ➔ Validator audit ➔ self-correction feedback routing
       </div>
     </div>
   );
@@ -786,19 +710,15 @@ function FutureVision() {
 function renderStageVisualizer(stageId: number) {
   switch (stageId) {
     case 1:
-      return <DatabaseSandbox />;
+      return <FoundationsDiagram />;
     case 2:
-      return <ApiPlayground />;
+      return <BackendApiDiagram />;
     case 3:
-      return <PipelineSimulator />;
+      return <ServerlessIngestionDiagram />;
     case 4:
-      return <RagSearch />;
+      return <SemanticRagDiagram />;
     case 5:
-      return <ChainRunner />;
-    case 6:
-      return <AgentSandbox />;
-    case 7:
-      return <FutureVision />;
+      return <MultiAgentDiagram />;
     default:
       return null;
   }
@@ -821,19 +741,19 @@ export default function EngineeringJourney() {
       <div className="max-w-4xl mx-auto px-4 sm:px-6 relative z-10 w-full">
         
         <div id="journey-header" className="text-center mb-16 sm:mb-24">
-          <p className="text-xs font-mono uppercase tracking-widest text-primary-accent mb-2">
+          <p className="text-section-subtitle mb-3">
             01 // INTENTIONAL EVOLUTION
           </p>
-          <h2 className="font-sans text-3xl sm:text-5xl font-bold tracking-tight text-text-primary leading-tight">
+          <h2 className="text-section-title">
             The Engineering <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary-accent to-secondary-accent">Roadmap</span>
           </h2>
-          <p className="text-sm sm:text-base text-text-secondary font-sans max-w-2xl mt-3.5 mx-auto leading-relaxed">
-            Witness my transition from absolute programming fundamentals into high-throughput API architecture, secure pipeline operations, and cognitive agent orchestrations.
+          <p className="text-body-comfortable max-w-3xl mt-4 mx-auto">
+            My career transition from absolute computing and relational database foundations into high-throughput backend APIs, serverless cloud ingestion, and stateful autonomous AI agent architectures.
           </p>
-          <div className="h-[2px] w-20 bg-gradient-to-r from-primary-accent to-secondary-accent mt-5 rounded-full mx-auto" />
+          <div className="h-[3px] w-24 bg-gradient-to-r from-primary-accent to-secondary-accent mt-5 rounded-full mx-auto" />
         </div>
 
-        <div className="relative pl-10 sm:pl-16 space-y-12">
+        <div className="relative pl-10 sm:pl-16 space-y-16">
           
           <div className="absolute left-[20px] sm:left-[24px] top-6 bottom-6 w-[2px] bg-gradient-to-b from-primary-accent via-violet-500 to-emerald-400 opacity-40" />
 
@@ -845,43 +765,84 @@ export default function EngineeringJourney() {
                 key={stage.id}
                 className="relative group scroll-mt-28 text-left"
               >
-                <div className="absolute left-[-20px] sm:left-[-40px] top-4 z-20 flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 -translate-x-1/2 rounded-full border border-border-subtle bg-card-bg text-text-secondary shadow-xs transition-all duration-300 group-hover:border-primary-accent/40 group-hover:text-primary-accent group-hover:scale-105 group-hover:shadow-[0_0_12px_rgba(var(--primary-accent-rgb),0.12)]">
+                {/* Node Milestone Icon */}
+                <div className="absolute left-[-20px] sm:left-[-40px] top-4 z-20 flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 -translate-x-1/2 rounded-full border border-border-subtle bg-card-bg text-text-secondary shadow-xs transition-all duration-300 group-hover:border-primary-accent group-hover:text-primary-accent group-hover:scale-105 group-hover:shadow-[0_0_12px_rgba(var(--primary-accent-rgb),0.12)]">
                   <IconComponent className="w-5 h-5 sm:w-6 sm:h-6" />
                 </div>
 
+                {/* Card Container */}
                 <div
-                  className="p-4 sm:p-7 rounded-3xl border border-border-subtle/40 bg-card-bg/20 hover:bg-card-bg hover:border-primary-accent/20 hover:shadow-lg transition-all duration-300 transform-gpu will-change-transform hover:scale-[1.005]"
+                  className="p-6 sm:p-8 md:p-10 rounded-3xl border border-border-subtle/40 bg-card-bg/20 hover:bg-card-bg hover:border-primary-accent/20 hover:shadow-lg transition-all duration-300 transform-gpu will-change-transform hover:scale-[1.005]"
                 >
-                  <div className="flex flex-wrap items-center justify-between gap-2 mb-2.5">
-                    <span className="text-[10px] font-mono uppercase tracking-widest text-text-secondary">
+                  {/* Meta Subtitle & Badge */}
+                  <div className="flex flex-wrap items-center justify-between gap-2.5 mb-3.5">
+                    <span className="text-xs sm:text-sm font-mono uppercase tracking-widest text-text-secondary font-bold">
                       {stage.subtitle}
                     </span>
-                    <span className="text-[10px] font-mono px-2.5 py-0.5 rounded-full uppercase bg-slate-100 dark:bg-slate-800 text-text-secondary border border-border-subtle">
+                    <span className="text-xs sm:text-sm font-mono px-3 py-1 rounded-full uppercase bg-slate-100 dark:bg-slate-800/80 text-text-secondary border border-border-subtle font-bold">
                       {stage.badge}
                     </span>
                   </div>
 
-                  <h3 className="font-sans text-lg sm:text-2xl font-bold text-text-primary tracking-tight flex items-center gap-2">
+                  {/* Title */}
+                  <h3 className="card-title-comfortable flex items-center gap-2">
                     {stage.title}
                     <Sparkles className="w-4 h-4 text-primary-accent/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 animate-pulse" />
                   </h3>
 
-                  <p className="mt-3 text-sm text-text-secondary leading-relaxed font-sans">
+                  {/* General Phase Description */}
+                  <p className="mt-4 text-desc-comfortable leading-relaxed">
                     {stage.description}
                   </p>
 
-                  <div className="flex flex-wrap gap-2 mt-4 pt-3 border-t border-border-subtle/30">
+                  {/* Clean Visual Architecture Diagram */}
+                  {renderStageVisualizer(stage.id)}
+
+                  {/* The Storytelling Segment (What I Learned -> What I Built -> Step Stone) */}
+                  <div className="mt-8 pt-6 border-t border-border-subtle/30 space-y-5">
+                    <div>
+                      <h4 className="font-display text-xs font-bold text-primary-accent uppercase tracking-wider flex items-center gap-2">
+                        <span className="h-1.5 w-1.5 rounded-full bg-primary-accent" />
+                        01 // WHAT I LEARNED
+                      </h4>
+                      <p className="mt-1 text-xs sm:text-sm text-text-secondary leading-relaxed pl-3.5">
+                        {stage.story.learned}
+                      </p>
+                    </div>
+
+                    <div className="border-l border-dashed border-border-subtle pl-4 py-1 ml-1">
+                      <h4 className="font-display text-xs font-bold text-secondary-accent uppercase tracking-wider flex items-center gap-2">
+                        <span className="h-1.5 w-1.5 rounded-full bg-secondary-accent" />
+                        02 // WHAT I BUILT
+                      </h4>
+                      <p className="mt-1 text-xs sm:text-sm text-text-secondary leading-relaxed">
+                        {stage.story.built}
+                      </p>
+                    </div>
+
+                    <div>
+                      <h4 className="font-display text-xs font-bold text-emerald-600 dark:text-emerald-400 uppercase tracking-wider flex items-center gap-2">
+                        <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
+                        03 // HOW IT PREPARED ME FOR THE NEXT STEP
+                      </h4>
+                      <p className="mt-1 text-xs sm:text-sm text-text-secondary leading-relaxed pl-3.5">
+                        {stage.story.bridge}
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Tech Stack Pills Footer */}
+                  <div className="flex flex-wrap gap-2 mt-6 pt-5 border-t border-border-subtle/30">
                     {stage.techs.map((tech, tIdx) => (
                       <span 
                         key={tIdx} 
-                        className="px-2 py-0.5 rounded text-[10px] font-mono bg-slate-100 dark:bg-slate-800 border border-border-subtle text-text-secondary"
+                        className="px-2.5 py-1 rounded-lg text-xs font-mono bg-slate-100 dark:bg-slate-800 border border-border-subtle text-text-secondary font-bold"
                       >
                         {tech}
                       </span>
                     ))}
                   </div>
 
-                  {renderStageVisualizer(stage.id)}
                 </div>
               </div>
             );

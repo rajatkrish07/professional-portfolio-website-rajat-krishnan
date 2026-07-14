@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { motion } from 'motion/react';
 import { Github, Star, GitFork, BookOpen, Users, Calendar, AlertCircle, RefreshCw, ExternalLink } from 'lucide-react';
 import { profileData } from '../data';
+import ProfileImage from './ProfileImage';
 
 interface GithubUser {
   login: string;
@@ -180,15 +181,9 @@ export default function GithubShowcase() {
             rel="noopener noreferrer"
             className="shrink-0 relative group"
           >
-            <img 
-              src={profileData.profilePicture} 
+            <ProfileImage 
               alt={user.name || user.login} 
-              referrerPolicy="no-referrer"
               className="w-20 h-20 rounded-full border-2 border-slate-100 dark:border-slate-800 group-hover:border-primary-accent transition-all duration-300 object-cover"
-              onError={(e) => {
-                e.currentTarget.onerror = null;
-                e.currentTarget.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100%' height='100%' fill='%230f172a'/%3E%3Ctext x='50%' y='55%' font-family='sans-serif' font-size='32' font-weight='bold' fill='%2338bdf8' text-anchor='middle' dominant-baseline='middle'%3ERK%3C/text%3E%3C/svg%3E";
-              }}
             />
             <div className="absolute inset-0 rounded-full bg-slate-900/40 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity duration-300">
               <ExternalLink className="w-5 h-5 text-white" />

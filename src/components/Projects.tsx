@@ -115,7 +115,7 @@ export default function Projects() {
       case 'Production':
         return 'bg-indigo-50 dark:bg-indigo-950/40 border-indigo-200 dark:border-indigo-800/40 text-indigo-700 dark:text-indigo-300 font-semibold';
       case 'Active Development':
-        return 'bg-blue-50 dark:bg-blue-950/40 border-blue-200 dark:border-blue-800/40 text-blue-700 dark:text-blue-300 font-semibold';
+        return 'bg-light-surface/40 dark:bg-light-surface border border-primary-accent/20 dark:border-primary-accent/30 text-primary-accent font-semibold';
       case 'Prototype':
         return 'bg-amber-50 dark:bg-amber-950/40 border-amber-200 dark:border-amber-800/40 text-amber-700 dark:text-amber-300 font-semibold';
       default:
@@ -131,12 +131,12 @@ export default function Projects() {
       >
         
         {/* Section Header */}
-        <div id="projects-section-header" className="text-center sm:text-left mb-10 sm:mb-16">
-          <p className="text-xs font-mono uppercase tracking-widest text-primary-accent mb-2">04 // PORTFOLIO SHOWCASE</p>
-          <h2 className="font-display text-2xl xs:text-3xl sm:text-4xl font-bold tracking-tight text-text-primary">
+        <div id="projects-section-header" className="text-center sm:text-left mb-12 sm:mb-20">
+          <p className="text-section-subtitle mb-3">04 // PORTFOLIO SHOWCASE</p>
+          <h2 className="text-section-title">
             Featured Projects
           </h2>
-          <div className="h-0.5 w-16 bg-primary-accent mt-3 rounded-full" />
+          <div className="h-[3px] w-20 bg-primary-accent mt-4 rounded-full" />
         </div>
 
         {/* Project Cards Grid */}
@@ -144,42 +144,42 @@ export default function Projects() {
           {projectsData.map((project) => (
             <div
               key={project.id}
-              className="group rounded-xl bg-card-bg border border-border-subtle hover:border-primary-accent/40 transition-all duration-300 hover:-translate-y-1 flex flex-col justify-between overflow-hidden shadow-xs hover:shadow-md"
+              className="group rounded-2xl bg-card-bg border border-border-subtle hover:border-primary-accent/40 transition-all duration-300 hover:-translate-y-1 flex flex-col justify-between overflow-hidden shadow-xs hover:shadow-md"
             >
               <div>
                 {/* Custom System Diagram Graphic */}
                 {renderSystemDiagram(project.id)}
 
-                <div className="p-4.5 sm:p-5 space-y-3.5 sm:space-y-4">
+                <div className="p-5 sm:p-6 space-y-4">
                   {/* Status & Name Header */}
                   <div className="flex items-center justify-between gap-2">
-                    <span className={`px-2 py-0.5 rounded text-[10px] font-mono border ${getStatusBadgeColor(project.status)} uppercase`}>
+                    <span className={`px-2.5 py-1 rounded text-[10px] font-mono border ${getStatusBadgeColor(project.status)} uppercase font-bold`}>
                       {project.status}
                     </span>
-                    <span className="text-[9px] font-mono text-text-secondary/60 uppercase">
+                    <span className="text-[10px] font-mono text-text-secondary/60 uppercase font-bold">
                       ID // {project.id}
                     </span>
                   </div>
 
-                  <h3 className="font-display text-base font-bold text-text-primary group-hover:text-primary-accent transition-colors">
+                  <h3 className="card-title-comfortable group-hover:text-primary-accent transition-colors">
                     {project.name}
                   </h3>
 
-                  <p className="text-xs font-mono text-secondary-accent font-semibold leading-relaxed">
+                  <p className="text-xs sm:text-sm font-mono text-secondary-accent font-bold leading-relaxed">
                     {project.tagline}
                   </p>
 
-                  <p className="text-xs sm:text-sm text-text-secondary leading-relaxed font-sans">
+                  <p className="text-desc-comfortable">
                     {project.description}
                   </p>
 
                   {/* Architecture Point Highlights */}
-                  <div className="space-y-2 pt-2">
-                    <p className="text-[10px] font-mono uppercase tracking-wider text-text-primary/70">Core Architectures</p>
-                    <div className="space-y-1.5">
+                  <div className="space-y-3 pt-2">
+                    <p className="text-[10px] sm:text-xs font-mono uppercase tracking-wider text-text-primary/70 font-bold">Core Architectures</p>
+                    <div className="space-y-2">
                       {project.architecturePoints.map((pt, index) => (
-                        <div key={index} className="flex items-start gap-2 text-xs text-text-secondary">
-                          <span className="text-primary-accent font-mono text-[10px] mt-0.5">&bull;</span>
+                        <div key={index} className="flex items-start gap-2.5 text-desc-comfortable">
+                          <span className="text-primary-accent font-mono text-xs mt-0.5">&bull;</span>
                           <span className="font-sans leading-relaxed">{pt}</span>
                         </div>
                       ))}
@@ -189,13 +189,13 @@ export default function Projects() {
               </div>
 
               {/* Bottom badging and Actions */}
-              <div className="p-4.5 sm:p-5 pt-0 border-t border-border-subtle mt-3.5 sm:mt-4">
+              <div className="p-5 sm:p-6 pt-0 border-t border-border-subtle mt-3">
                 {/* Badges list */}
-                <div className="flex flex-wrap gap-1.5 py-4">
+                <div className="flex flex-wrap gap-2 py-4">
                   {project.techBadges.map((badge, bIdx) => (
                     <span
                       key={bIdx}
-                      className="px-2 py-0.5 rounded bg-slate-100/50 dark:bg-slate-800/50 border border-border-subtle text-[10px] font-mono text-primary-accent font-medium"
+                      className="px-2.5 py-1 rounded bg-slate-100/50 dark:bg-slate-800/50 border border-border-subtle text-[10px] sm:text-[11px] font-mono text-primary-accent font-bold"
                     >
                       {badge}
                     </span>
@@ -209,9 +209,9 @@ export default function Projects() {
                     href={project.githubUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 text-xs font-mono text-text-secondary hover:text-primary-accent transition-colors py-1.5"
+                    className="inline-flex items-center gap-2 text-xs sm:text-sm font-mono text-text-secondary hover:text-primary-accent transition-colors py-2 font-bold"
                   >
-                    <Github className="w-3.5 h-3.5" /> Codebase
+                    <Github className="w-4 h-4" /> Codebase
                   </a>
                   
                   {project.liveUrl ? (
@@ -220,13 +220,13 @@ export default function Projects() {
                       href={project.liveUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1.5 text-xs font-mono text-primary-accent hover:text-secondary-accent transition-colors py-1.5"
+                      className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-mono text-primary-accent hover:text-secondary-accent transition-colors py-2 font-bold"
                     >
-                      Live Demo <ExternalLink className="w-3.5 h-3.5" />
+                      Live Demo <ExternalLink className="w-4 h-4" />
                     </a>
                   ) : (
                     project.status !== 'Coming Soon' && (
-                      <span className="text-[10px] font-mono text-text-secondary/40 italic">
+                      <span className="text-[10px] sm:text-xs font-mono text-text-secondary/40 italic font-bold">
                         Internal Repo
                       </span>
                     )
@@ -238,13 +238,13 @@ export default function Projects() {
         </div>
 
         {/* Real-time GitHub Integration Section */}
-        <div className="mt-14 sm:mt-20 pt-10 sm:pt-16 border-t border-slate-200/60 dark:border-slate-800/60">
-          <div className="text-center sm:text-left mb-8 sm:mb-10">
-            <p className="text-xs font-mono uppercase tracking-widest text-primary-accent mb-2">05 // LIVE ENGAGEMENT METRICS</p>
-            <h3 className="font-display text-xl xs:text-2xl sm:text-3xl font-bold tracking-tight text-text-primary">
+        <div className="mt-20 sm:mt-28 pt-16 sm:pt-24 border-t border-slate-200/60 dark:border-slate-800/60">
+          <div className="text-center sm:text-left mb-12 sm:mb-16">
+            <p className="text-section-subtitle mb-3">05 // LIVE ENGAGEMENT METRICS</p>
+            <h3 className="text-section-title">
               Real-time GitHub Contributions & Activity
             </h3>
-            <div className="h-0.5 w-12 bg-primary-accent mt-3 rounded-full" />
+            <div className="h-[3px] w-20 bg-primary-accent mt-4 rounded-full" />
           </div>
           
           <GithubShowcase />

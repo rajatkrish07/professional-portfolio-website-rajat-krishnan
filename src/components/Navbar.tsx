@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Github, Linkedin, Mail, Menu, X, FileText, Sun, Moon } from 'lucide-react';
 import { profileData } from '../data';
+import ProfileImage from './ProfileImage';
 
 interface NavbarProps {
   activeSection: string;
@@ -113,15 +114,8 @@ export default function Navbar({ activeSection, onNavigate, onViewResume }: Navb
             className="group flex items-center space-x-2.5 sm:space-x-3 text-left cursor-pointer"
           >
             <div className="relative shrink-0 w-11 h-11 md:w-[64px] md:h-[64px] rounded-full overflow-hidden border border-border-subtle/60 group-hover:border-primary-accent/50 transition-all duration-300 shadow-md">
-              <img
-                src={profileData.profilePicture}
-                alt={profileData.name}
-                referrerPolicy="no-referrer"
+              <ProfileImage
                 className="w-full h-full rounded-full object-cover transition-transform duration-500 group-hover:scale-105"
-                onError={(e) => {
-                  e.currentTarget.onerror = null;
-                  e.currentTarget.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100%' height='100%' fill='%230f172a'/%3E%3Ctext x='50%' y='55%' font-family='sans-serif' font-size='32' font-weight='bold' fill='%2338bdf8' text-anchor='middle' dominant-baseline='middle'%3ERK%3C/text%3E%3C/svg%3E";
-                }}
               />
             </div>
             <span className="font-sans text-xs xs:text-sm sm:text-base md:text-lg font-medium tracking-tight text-text-primary group-hover:text-primary-accent transition-colors duration-200">

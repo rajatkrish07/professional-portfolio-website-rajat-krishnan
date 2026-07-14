@@ -7,8 +7,11 @@
   --primary-bg: #fafafa;
   --secondary-bg: #ffffff;
   --card-bg: #ffffff;
-  --primary-accent: #2563eb;
-  --secondary-accent: #1d4ed8;
+  --primary-accent: #1d4ed8;
+  --secondary-accent: #1e40af;
+  --light-surface: #dbeafe;
+  --text-on-blue: #f8fafc;
+  --muted-border: rgba(255, 255, 255, 0.12);
   --text-primary: #09090b;
   --text-secondary: #52525b;
   --border-subtle: rgba(9, 9, 11, 0.06);
@@ -20,6 +23,9 @@
   --card-bg: #0d121f;
   --primary-accent: #3b82f6;
   --secondary-accent: #60a5fa;
+  --light-surface: rgba(29, 78, 216, 0.15);
+  --text-on-blue: #f8fafc;
+  --muted-border: rgba(255, 255, 255, 0.12);
   --text-primary: #f8fafc;
   --text-secondary: #94a3b8;
   --border-subtle: rgba(241, 245, 249, 0.06);
@@ -36,6 +42,9 @@
   --color-card-bg: var(--card-bg);
   --color-primary-accent: var(--primary-accent);
   --color-secondary-accent: var(--secondary-accent);
+  --color-light-surface: var(--light-surface);
+  --color-text-on-blue: var(--text-on-blue);
+  --color-muted-border: var(--muted-border);
   --color-text-primary: var(--text-primary);
   --color-text-secondary: var(--text-secondary);
   --color-border-subtle: var(--border-subtle);
@@ -72,12 +81,12 @@ body {
   border: 1px solid rgba(0, 0, 0, 0.03);
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #1e3a8a;
+  background: var(--primary-accent);
 }
 
 /* Custom micro gradients & visual styles */
 .gradient-text {
-  background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%);
+  background: linear-gradient(135deg, var(--secondary-accent) 0%, var(--primary-accent) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
@@ -121,7 +130,7 @@ body {
   content: '';
   position: absolute;
   inset: -1px;
-  background: linear-gradient(90deg, rgba(30, 58, 138, 0.08), rgba(37, 99, 235, 0.03), transparent);
+  background: linear-gradient(90deg, color-mix(in srgb, var(--primary-accent) 8%, transparent), color-mix(in srgb, var(--secondary-accent) 3%, transparent), transparent);
   border-radius: inherit;
   z-index: -1;
   opacity: 0;
@@ -129,6 +138,66 @@ body {
 }
 .glow-effect:hover::after {
   opacity: 1;
+}
+
+/* Premium typography utility tokens */
+@utility text-section-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.45rem, 2.2vw + 0.45rem, 2.375rem);
+  line-height: 1.2;
+  letter-spacing: -0.025em;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+@utility text-section-subtitle {
+  font-family: var(--font-mono);
+  font-size: clamp(0.6875rem, 0.3vw + 0.35rem, 0.75rem);
+  line-height: 1.6;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: var(--primary-accent);
+}
+
+@utility text-body-comfortable {
+  font-family: var(--font-sans);
+  font-size: clamp(0.875rem, 0.4vw + 0.45rem, 1.0625rem);
+  line-height: 1.65;
+  letter-spacing: -0.004em;
+  color: var(--text-secondary);
+}
+
+@utility text-desc-comfortable {
+  font-family: var(--font-sans);
+  font-size: clamp(0.8125rem, 0.25vw + 0.4rem, 0.9375rem);
+  line-height: 1.6;
+  letter-spacing: -0.003em;
+  color: var(--text-secondary);
+}
+
+@utility text-mono-comfortable {
+  font-family: var(--font-mono);
+  font-size: clamp(0.725rem, 0.2vw + 0.35rem, 0.8125rem);
+  line-height: 1.6;
+  letter-spacing: -0.005em;
+}
+
+@utility card-title-comfortable {
+  font-family: var(--font-display);
+  font-size: clamp(1.05rem, 0.4vw + 0.5rem, 1.3125rem);
+  line-height: 1.35;
+  letter-spacing: -0.015em;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+@utility btn-premium-text {
+  font-family: var(--font-mono);
+  font-size: clamp(0.725rem, 0.25vw + 0.35rem, 0.875rem);
+  line-height: 1.5;
+  letter-spacing: 0.1em;
+  font-weight: 700;
 }
 
 /* Subtle pattern textures */
@@ -244,26 +313,106 @@ html {
     display: none !important;
   }
 
+  #resume-modal-overlay {
+    position: static !important;
+    background: transparent !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    overflow: visible !important;
+  }
+
+  /* Force exactly A4 portrait single page on printing */
+  @page {
+    size: A4 portrait;
+    margin: 12mm 14mm 12mm 14mm !important;
+  }
+
+  body:has(#printable-resume-body) {
+    background: #ffffff !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+  }
+
   #printable-resume-body {
     visibility: visible !important;
     position: absolute !important;
     left: 0 !important;
     top: 0 !important;
     width: 100% !important;
+    max-width: 100% !important;
     height: auto !important;
-    max-height: none !important;
-    overflow: visible !important;
     padding: 0 !important;
     margin: 0 !important;
+    border: none !important;
+    box-shadow: none !important;
     background: #ffffff !important;
+    color: #000000 !important;
+    box-sizing: border-box !important;
   }
 
   #printable-resume-body * {
     visibility: visible !important;
     background: transparent !important;
     color: #000000 !important;
-    border-color: #94a3b8 !important;
+    border-color: #d1d5db !important;
     box-shadow: none !important;
+  }
+
+  /* Compress spaces for native printing to force exact single A4 page fit */
+  #printable-resume-body .space-y-5,
+  #printable-resume-body .sm:space-y-6 {
+    margin-top: 10px !important;
+  }
+
+  #printable-resume-body .space-y-5 > :not([hidden]) ~ :not([hidden]),
+  #printable-resume-body .sm:space-y-6 > :not([hidden]) ~ :not([hidden]) {
+    margin-top: 12px !important;
+  }
+
+  #printable-resume-body h1 {
+    font-size: 24pt !important;
+    line-height: 1.1 !important;
+    font-weight: bold !important;
+  }
+
+  #printable-resume-body h2 {
+    font-size: 11.5pt !important;
+    margin-top: 8pt !important;
+    margin-bottom: 2pt !important;
+    padding-bottom: 1pt !important;
+    border-bottom-width: 1px !important;
+    border-color: #d1d5db !important;
+    font-weight: bold !important;
+    text-transform: uppercase !important;
+  }
+
+  #printable-resume-body strong {
+    font-size: 10pt !important;
+    font-weight: bold !important;
+    color: #000000 !important;
+  }
+
+  #printable-resume-body p,
+  #printable-resume-body li,
+  #printable-resume-body span,
+  #printable-resume-body a {
+    font-size: 9.5pt !important;
+    line-height: 1.35 !important;
+    color: #222222 !important;
+  }
+
+  #printable-resume-body ul {
+    margin-top: 3pt !important;
+  }
+
+  #printable-resume-body li {
+    margin-bottom: 1.5pt !important;
+  }
+
+  #printable-resume-body .list-disc {
+    padding-left: 14pt !important;
   }
 
   /* Kill transitions and animations to prevent print visual issues */
@@ -272,6 +421,94 @@ html {
     animation: none !important;
     transform: none !important;
   }
+}
+
+/* ==========================================================================
+   PRECISE LAYOUT SPECIFICATIONS FOR HIGH-RES ONE-PAGE CANVAS CAPTURE (jsPDF)
+   ========================================================================== */
+.generating-pdf {
+  width: 800px !important;
+  height: 1130px !important;
+  max-height: 1130px !important;
+  min-height: 1130px !important;
+  padding: 34px 38px !important;
+  box-sizing: border-box !important;
+  position: relative !important;
+  transform: none !important;
+  left: 0 !important;
+  top: 0 !important;
+  overflow: hidden !important;
+  background: #ffffff !important;
+  color: #000000 !important;
+}
+
+.generating-pdf,
+.generating-pdf * {
+  transition: none !important;
+  animation: none !important;
+  animation-duration: 0s !important;
+  box-shadow: none !important;
+  text-shadow: none !important;
+}
+
+.generating-pdf .space-y-5,
+.generating-pdf .sm:space-y-6 {
+  margin-top: 12px !important;
+  --tw-space-y-reverse: 0 !important;
+  margin-bottom: 0 !important;
+}
+
+.generating-pdf .space-y-5 > :not([hidden]) ~ :not([hidden]),
+.generating-pdf .sm:space-y-6 > :not([hidden]) ~ :not([hidden]) {
+  margin-top: 14px !important;
+  margin-bottom: 0 !important;
+}
+
+.generating-pdf .space-y-1.5 > :not([hidden]) ~ :not([hidden]),
+.generating-pdf .sm:space-y-2 > :not([hidden]) ~ :not([hidden]) {
+  margin-top: 4px !important;
+}
+
+.generating-pdf .space-y-3 > :not([hidden]) ~ :not([hidden]) {
+  margin-top: 8px !important;
+}
+
+.generating-pdf .space-y-1 > :not([hidden]) ~ :not([hidden]) {
+  margin-top: 2px !important;
+}
+
+.generating-pdf h1 {
+  font-size: 24px !important;
+  line-height: 1.1 !important;
+}
+
+.generating-pdf h2 {
+  font-size: 11px !important;
+  margin-top: 0 !important;
+  margin-bottom: 2px !important;
+  padding-bottom: 1px !important;
+}
+
+.generating-pdf strong,
+.generating-pdf p,
+.generating-pdf li,
+.generating-pdf span,
+.generating-pdf a {
+  font-size: 10.5px !important;
+  line-height: 1.35 !important;
+  color: #111111 !important;
+}
+
+.generating-pdf ul {
+  margin-top: 4px !important;
+}
+
+.generating-pdf li {
+  margin-bottom: 2px !important;
+}
+
+.generating-pdf .list-disc {
+  padding-left: 14px !important;
 }
 
 

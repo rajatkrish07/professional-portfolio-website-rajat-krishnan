@@ -83,7 +83,8 @@ export default function useDocumentMetadata(activeSection: string) {
     updateMetaTag('og:url', canonicalUrl, true);
 
     // Inject local OG image preview pointing to Rajat's local profile image
-    const absoluteAvatarUrl = profileImage.startsWith('http') ? profileImage : `${currentOrigin}${profileImage}`;
+    const normalizedProfileImage = profileImage.startsWith('/') ? profileImage : `/${profileImage}`;
+    const absoluteAvatarUrl = profileImage.startsWith('http') ? profileImage : `${currentOrigin}${normalizedProfileImage}`;
     updateMetaTag('og:image', absoluteAvatarUrl, true);
     updateMetaTag('og:image:width', '460', true);
     updateMetaTag('og:image:height', '460', true);

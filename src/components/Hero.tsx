@@ -380,14 +380,14 @@ export default function Hero({ onViewProjects, onViewResume }: HeroProps) {
               />
             </div>
              {/* Headline communicating what they build */}
-             <div className="space-y-3 pt-2">
+             <div className="space-y-4 pt-3">
                <motion.h2
                  id="hero-headline"
                  variants={itemVariants}
-                 className="font-sans text-2xl xs:text-3xl sm:text-3xl lg:text-4xl font-bold tracking-tight text-text-primary leading-snug sm:leading-snug"
+                 className="font-sans text-2xl xs:text-3xl sm:text-4xl md:text-[42px] lg:text-[46px] xl:text-[50px] font-extrabold tracking-tight text-text-primary leading-[1.15] sm:leading-[1.15] md:leading-[1.15] lg:leading-[1.15]"
                >
                  AI &amp; Systems Engineer <br className="hidden sm:inline" />
-                 building <span className="shimmer-gradient font-bold">intelligent systems</span> <br className="hidden sm:inline" />
+                 building <span className="shimmer-gradient font-extrabold">intelligent systems</span> <br className="hidden sm:inline" />
                  that solve real problems.
                </motion.h2>
              </div>
@@ -395,7 +395,7 @@ export default function Hero({ onViewProjects, onViewResume }: HeroProps) {
              {/* Secondary Description */}
              <motion.p
                variants={itemVariants}
-               className="text-sm sm:text-base text-text-secondary leading-relaxed max-w-2xl font-sans"
+               className="text-sm sm:text-base md:text-[17px] lg:text-[18px] text-text-secondary/90 leading-relaxed max-w-2xl font-sans font-normal tracking-normal"
              >
                Building autonomous agents, scalable backend systems, intelligent workflows, and production-ready AI applications.
              </motion.p>
@@ -403,14 +403,14 @@ export default function Hero({ onViewProjects, onViewResume }: HeroProps) {
              {/* Actions with professional light-theme contrast */}
              <motion.div
                variants={itemVariants}
-               className="flex flex-col sm:flex-row items-center gap-4 pt-4"
+               className="flex flex-col sm:flex-row items-center gap-5 pt-6"
              >
                <motion.button
                  onClick={onViewProjects}
                  whileHover={{ scale: 1.015 }}
                  whileTap={{ scale: 0.985 }}
                  transition={{ type: "spring", stiffness: 400, damping: 20 }}
-                 className="group w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-lg bg-primary-accent hover:bg-secondary-accent text-white dark:text-slate-950 dark:bg-primary-accent dark:hover:bg-secondary-accent text-xs font-mono font-bold tracking-wide transition-all shadow-md shadow-blue-900/10 border border-primary-accent/20 cursor-pointer relative overflow-hidden"
+                 className="group w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-4.5 sm:px-10 sm:py-5 rounded-xl bg-primary-accent hover:bg-secondary-accent text-white dark:text-slate-950 dark:bg-primary-accent dark:hover:bg-secondary-accent btn-premium-text transition-all shadow-md shadow-blue-900/10 border border-primary-accent/20 cursor-pointer relative overflow-hidden"
                >
                  <span className="relative z-10 flex items-center gap-2">
                    Explore Projects
@@ -421,7 +421,7 @@ export default function Hero({ onViewProjects, onViewResume }: HeroProps) {
                      className="inline-block"
                      transition={{ type: "spring", stiffness: 300, damping: 15 }}
                    >
-                     <ArrowRight className="w-3.5 h-3.5 text-white dark:text-slate-950" />
+                     <ArrowRight className="w-4 h-4 text-white dark:text-slate-950" />
                    </motion.span>
                  </span>
                  {/* Premium subtle gloss highlight on hover */}
@@ -433,7 +433,7 @@ export default function Hero({ onViewProjects, onViewResume }: HeroProps) {
                  whileHover="hover"
                  whileTap={{ scale: 0.985 }}
                  transition={{ type: "spring", stiffness: 400, damping: 20 }}
-                 className="group w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-lg bg-card-bg border border-border-subtle hover:border-primary-accent text-primary-accent hover:bg-primary-accent/5 text-xs font-mono font-bold tracking-wide transition-all cursor-pointer shadow-2xs"
+                 className="group w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-4.5 sm:px-10 sm:py-5 rounded-xl bg-card-bg border border-border-subtle hover:border-primary-accent text-primary-accent hover:bg-primary-accent/5 btn-premium-text transition-all cursor-pointer shadow-2xs"
                >
                  <motion.span
                    variants={{
@@ -441,7 +441,7 @@ export default function Hero({ onViewProjects, onViewResume }: HeroProps) {
                    }}
                    transition={{ type: "spring", stiffness: 300, damping: 12 }}
                  >
-                   <FileText className="w-3.5 h-3.5 text-primary-accent" />
+                   <FileText className="w-4 h-4 text-primary-accent" />
                  </motion.span>
                  <span>View Resume</span>
                </motion.button>

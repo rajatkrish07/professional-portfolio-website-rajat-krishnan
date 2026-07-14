@@ -208,7 +208,7 @@ export default function App() {
       </main>
 
       {/* Footer information & credentials */}
-      <Footer />
+      <Footer onViewResume={() => setIsResumeOpen(true)} />
 
       {/* Interactive Resume ATS Viewer and Printer - Eagerly optimized out of initial load */}
       {isResumeOpen && (

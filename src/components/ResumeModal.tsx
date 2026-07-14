@@ -1,58 +1,114 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { X, Mail, Phone, MapPin, Linkedin, Github, FileText, Download, Globe } from 'lucide-react';
+import { X, Mail, Phone, MapPin, Linkedin, Github, FileText, Download, Printer } from 'lucide-react';
 import { profileData, currentCompanyData } from '../data';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 import { usePerformanceConfig } from '../hooks/usePerformanceConfig';
 import { downloadFile } from '../utils/download';
+import { prepareAndPrint, registerPrintLifecycleListeners } from '../utils/printService';
 
-// Helper function to convert oklch(...) colors to standard rgb(...) or rgba(...)
-const convertOklchToRgbInString = (str: string): string => {
-  if (typeof str !== 'string' || !str.includes('oklch')) return str;
+// Helper function to convert oklch(...) and oklab(...) colors to standard rgb(...) or rgba(...)
+const convertAdvancedColorsToRgb = (str: string): string => {
+  if (typeof str !== 'string') return str;
+  if (!str.includes('oklch') && !str.includes('oklab')) return str;
 
-  return str.replace(/oklch\(\s*([0-9.]+%?)\s+([0-9.]+%?)\s+([0-9.]+)(?:deg)?(?:\s*\/\s*([0-9.]+%?))?\s*\)/gi, (_match, l_val, c_val, h_val, a_val) => {
-    const L = l_val.endsWith('%') ? parseFloat(l_val) / 100 : parseFloat(l_val);
-    const C = c_val.endsWith('%') ? parseFloat(c_val) / 100 : parseFloat(c_val);
-    const H = parseFloat(h_val);
-    const A = a_val ? (a_val.endsWith('%') ? parseFloat(a_val) / 100 : parseFloat(a_val)) : 1;
+  let result = str;
 
-    // 1. Convert OKLCH to Oklab
-    const h_rad = (H * Math.PI) / 180;
-    const a_oklab = C * Math.cos(h_rad);
-    const b_oklab = C * Math.sin(h_rad);
+  // 1. Convert OKLCH to RGB
+  if (result.includes('oklch')) {
+    result = result.replace(
+      /oklch\(\s*([0-9.]+%?)(?:\s+|,\s*)([0-9.]+%?)(?:\s+|,\s*)([+-]?[0-9.]+)(?:deg)?(?:\s*(?:\/|,)\s*([0-9.]+%?))?\s*\)/gi,
+      (_match, l_val, c_val, h_val, a_val) => {
+        const L = l_val.endsWith('%') ? parseFloat(l_val) / 100 : parseFloat(l_val);
+        const C = c_val.endsWith('%') ? parseFloat(c_val) / 100 : parseFloat(c_val);
+        const H = h_val === 'none' ? 0 : parseFloat(h_val);
+        const A = a_val ? (a_val.endsWith('%') ? parseFloat(a_val) / 100 : parseFloat(a_val)) : 1;
 
-    // 2. Convert Oklab to LMS
-    const l_lms = L + 0.3963377774 * a_oklab + 0.2158037573 * b_oklab;
-    const m_lms = L - 0.1055613458 * a_oklab - 0.0638541728 * b_oklab;
-    const s_lms = L - 0.0894841775 * a_oklab - 1.2914855480 * b_oklab;
+        // Convert OKLCH to Oklab
+        const h_rad = (H * Math.PI) / 180;
+        const a_oklab = C * Math.cos(h_rad);
+        const b_oklab = C * Math.sin(h_rad);
 
-    // 3. Cube LMS values
-    const l_cube = Math.pow(Math.max(0, l_lms), 3);
-    const m_cube = Math.pow(Math.max(0, m_lms), 3);
-    const s_cube = Math.pow(Math.max(0, s_lms), 3);
+        // Convert Oklab to LMS
+        const l_lms = L + 0.3963377774 * a_oklab + 0.2158037573 * b_oklab;
+        const m_lms = L - 0.1055613458 * a_oklab - 0.0638541728 * b_oklab;
+        const s_lms = L - 0.0894841775 * a_oklab - 1.2914855480 * b_oklab;
 
-    // 4. Convert LMS cubed to linear sRGB
-    const r_lin = +4.0767416621 * l_cube - 3.3077115913 * m_cube + 0.2309699292 * s_cube;
-    const g_lin = -1.2684380046 * l_cube + 2.6097574011 * m_cube - 0.3413193965 * s_cube;
-    const b_lin = -0.0041960863 * l_cube - 0.7034186147 * m_cube + 1.7076147010 * s_cube;
+        // Cube LMS values
+        const l_cube = Math.pow(Math.max(0, l_lms), 3);
+        const m_cube = Math.pow(Math.max(0, m_lms), 3);
+        const s_cube = Math.pow(Math.max(0, s_lms), 3);
 
-    // 5. Convert linear sRGB to sRGB with gamma compression
-    const r = r_lin <= 0.0031308 ? 12.92 * r_lin : 1.055 * Math.pow(Math.max(0, r_lin), 1 / 2.4) - 0.055;
-    const g = g_lin <= 0.0031308 ? 12.92 * g_lin : 1.055 * Math.pow(Math.max(0, g_lin), 1 / 2.4) - 0.055;
-    const b = b_lin <= 0.0031308 ? 12.92 * b_lin : 1.055 * Math.pow(Math.max(0, b_lin), 1 / 2.4) - 0.055;
+        // Convert LMS cubed to linear sRGB
+        const r_lin = +4.0767416621 * l_cube - 3.3077115913 * m_cube + 0.2309699292 * s_cube;
+        const g_lin = -1.2684380046 * l_cube + 2.6097574011 * m_cube - 0.3413193965 * s_cube;
+        const b_lin = -0.0041960863 * l_cube - 0.7034186147 * m_cube + 1.7076147010 * s_cube;
 
-    // 6. Scale to 0-255 range
-    const r_255 = Math.max(0, Math.min(255, Math.round(r * 255)));
-    const g_255 = Math.max(0, Math.min(255, Math.round(g * 255)));
-    const b_255 = Math.max(0, Math.min(255, Math.round(b * 255)));
+        // Convert linear sRGB to sRGB with gamma compression
+        const r = r_lin <= 0.0031308 ? 12.92 * r_lin : 1.055 * Math.pow(Math.max(0, r_lin), 1 / 2.4) - 0.055;
+        const g = g_lin <= 0.0031308 ? 12.92 * g_lin : 1.055 * Math.pow(Math.max(0, g_lin), 1 / 2.4) - 0.055;
+        const b = b_lin <= 0.0031308 ? 12.92 * b_lin : 1.055 * Math.pow(Math.max(0, b_lin), 1 / 2.4) - 0.055;
 
-    if (A === 1) {
-      return `rgb(${r_255}, ${g_255}, ${b_255})`;
-    } else {
-      return `rgba(${r_255}, ${g_255}, ${b_255}, ${A})`;
-    }
-  });
+        // Scale to 0-255 range
+        const r_255 = Math.max(0, Math.min(255, Math.round(r * 255)));
+        const g_255 = Math.max(0, Math.min(255, Math.round(g * 255)));
+        const b_255 = Math.max(0, Math.min(255, Math.round(b * 255)));
+
+        if (A === 1) {
+          return `rgb(${r_255}, ${g_255}, ${b_255})`;
+        } else {
+          return `rgba(${r_255}, ${g_255}, ${b_255}, ${A})`;
+        }
+      }
+    );
+  }
+
+  // 2. Convert Oklab to RGB
+  if (result.includes('oklab')) {
+    result = result.replace(
+      /oklab\(\s*([0-9.]+%?)(?:\s+|,\s*)([+-]?[0-9.]+%?)(?:\s+|,\s*)([+-]?[0-9.]+%?)(?:\s*(?:\/|,)\s*([0-9.]+%?))?\s*\)/gi,
+      (_match, l_val, a_val, b_val, alpha_val) => {
+        const L = l_val.endsWith('%') ? parseFloat(l_val) / 100 : parseFloat(l_val);
+        const a_oklab = a_val.endsWith('%') ? parseFloat(a_val) / 100 : parseFloat(a_val);
+        const b_oklab = b_val.endsWith('%') ? parseFloat(b_val) / 100 : parseFloat(b_val);
+        const A = alpha_val ? (alpha_val.endsWith('%') ? parseFloat(alpha_val) / 100 : parseFloat(alpha_val)) : 1;
+
+        // Convert Oklab to LMS
+        const l_lms = L + 0.3963377774 * a_oklab + 0.2158037573 * b_oklab;
+        const m_lms = L - 0.1055613458 * a_oklab - 0.0638541728 * b_oklab;
+        const s_lms = L - 0.0894841775 * a_oklab - 1.2914855480 * b_oklab;
+
+        // Cube LMS values
+        const l_cube = Math.pow(Math.max(0, l_lms), 3);
+        const m_cube = Math.pow(Math.max(0, m_lms), 3);
+        const s_cube = Math.pow(Math.max(0, s_lms), 3);
+
+        // Convert LMS cubed to linear sRGB
+        const r_lin = +4.0767416621 * l_cube - 3.3077115913 * m_cube + 0.2309699292 * s_cube;
+        const g_lin = -1.2684380046 * l_cube + 2.6097574011 * m_cube - 0.3413193965 * s_cube;
+        const b_lin = -0.0041960863 * l_cube - 0.7034186147 * m_cube + 1.7076147010 * s_cube;
+
+        // Convert linear sRGB to sRGB with gamma compression
+        const r = r_lin <= 0.0031308 ? 12.92 * r_lin : 1.055 * Math.pow(Math.max(0, r_lin), 1 / 2.4) - 0.055;
+        const g = g_lin <= 0.0031308 ? 12.92 * g_lin : 1.055 * Math.pow(Math.max(0, g_lin), 1 / 2.4) - 0.055;
+        const b = b_lin <= 0.0031308 ? 12.92 * b_lin : 1.055 * Math.pow(Math.max(0, b_lin), 1 / 2.4) - 0.055;
+
+        // Scale to 0-255 range
+        const r_255 = Math.max(0, Math.min(255, Math.round(r * 255)));
+        const g_255 = Math.max(0, Math.min(255, Math.round(g * 255)));
+        const b_255 = Math.max(0, Math.min(255, Math.round(b * 255)));
+
+        if (A === 1) {
+          return `rgb(${r_255}, ${g_255}, ${b_255})`;
+        } else {
+          return `rgba(${r_255}, ${g_255}, ${b_255}, ${A})`;
+        }
+      }
+    );
+  }
+
+  return result;
 };
 
 interface ResumeModalProps {
@@ -78,6 +134,14 @@ export default function ResumeModal({ isOpen, onClose }: ResumeModalProps) {
     window.addEventListener('resize', checkMobile);
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
+
+  useEffect(() => {
+    if (!isOpen) return;
+    const cleanup = registerPrintLifecycleListeners();
+    return () => {
+      cleanup();
+    };
+  }, [isOpen]);
 
   useEffect(() => {
     if (!isOpen || !wrapperRef.current) return;
@@ -124,7 +188,7 @@ export default function ResumeModal({ isOpen, onClose }: ResumeModalProps) {
         throw new Error('Resume element reference is not available.');
       }
 
-      // 1. Temporarily patch/convert stylesheets containing oklch
+      // 1. Temporarily patch/convert stylesheets containing oklch or oklab
       for (const sheet of originalStyleSheets) {
         try {
           if (sheet.cssRules) {
@@ -133,8 +197,8 @@ export default function ResumeModal({ isOpen, onClose }: ResumeModalProps) {
               cssText += rule.cssText + '\n';
             }
 
-            if (cssText.includes('oklch')) {
-              const convertedCss = convertOklchToRgbInString(cssText);
+            if (cssText.includes('oklch') || cssText.includes('oklab')) {
+              const convertedCss = convertAdvancedColorsToRgb(cssText);
               sheet.disabled = true;
 
               const tempStyle = document.createElement('style');
@@ -149,20 +213,20 @@ export default function ResumeModal({ isOpen, onClose }: ResumeModalProps) {
         }
       }
 
-      // 2. Temporarily override window.getComputedStyle to return rgb colors instead of oklch
+      // 2. Temporarily override window.getComputedStyle to return rgb colors instead of oklch or oklab
       window.getComputedStyle = function (el, pseudoElt) {
         const style = originalGetComputedStyle(el, pseudoElt);
         return new Proxy(style, {
           get(target, prop) {
             const value = Reflect.get(target, prop);
             if (typeof value === 'string') {
-              return convertOklchToRgbInString(value);
+              return convertAdvancedColorsToRgb(value);
             }
             if (typeof value === 'function') {
               if (prop === 'getPropertyValue') {
                 return function (propertyName: string) {
                   const val = target.getPropertyValue(propertyName);
-                  return typeof val === 'string' ? convertOklchToRgbInString(val) : val;
+                  return typeof val === 'string' ? convertAdvancedColorsToRgb(val) : val;
                 };
               }
               return value.bind(target);
@@ -172,45 +236,22 @@ export default function ResumeModal({ isOpen, onClose }: ResumeModalProps) {
         });
       };
 
-      // Save original styling
-      const originalMaxHeight = element.style.maxHeight;
-      const originalOverflow = element.style.overflow;
-      const originalTransform = element.style.transform;
-      const originalLeft = element.style.left;
-      const originalTransformOrigin = element.style.transformOrigin;
-      const originalWidth = element.style.width;
-      const originalPosition = element.style.position;
-      const originalPadding = element.style.padding;
+      // Apply the .generating-pdf layout class to compress the resume to fit exactly on 1 A4 page
+      element.classList.add('generating-pdf');
 
-      // Expand container and set exact desktop PDF specs for capture
-      element.style.maxHeight = 'none';
-      element.style.overflow = 'visible';
-      element.style.transform = 'none';
-      element.style.left = '0';
-      element.style.transformOrigin = 'top left';
-      element.style.width = '800px';
-      element.style.position = 'relative';
-      element.style.padding = '48px'; // standard sm:p-12 A4 padding
+      // Wait for layout and styles to re-calculate and settle
+      await new Promise((resolve) => setTimeout(resolve, 150));
 
-      // Wait a frame for layout and render styles to settle
-      await new Promise((resolve) => setTimeout(resolve, 100));
-
+      // Capture canvas at 3x scale for crisp, high-resolution print-quality text and icons
       const canvas = await html2canvas(element, {
-        scale: 2, // 2x scale for crisp high-resolution text
+        scale: 3,
         useCORS: true,
         logging: false,
         backgroundColor: '#ffffff',
       });
 
-      // Restore original styling immediately
-      element.style.maxHeight = originalMaxHeight;
-      element.style.overflow = originalOverflow;
-      element.style.transform = originalTransform;
-      element.style.left = originalLeft;
-      element.style.transformOrigin = originalTransformOrigin;
-      element.style.width = originalWidth;
-      element.style.position = originalPosition;
-      element.style.padding = originalPadding;
+      // Remove the class to immediately restore the interactive modal screen styles
+      element.classList.remove('generating-pdf');
 
       const imgData = canvas.toDataURL('image/png');
       
@@ -218,34 +259,16 @@ export default function ResumeModal({ isOpen, onClose }: ResumeModalProps) {
       const pdfWidth = 210;
       const pdfHeight = 297;
       
-      const canvasWidth = canvas.width;
-      const canvasHeight = canvas.height;
+      const pdf = new jsPDF({
+        orientation: 'portrait',
+        unit: 'mm',
+        format: 'a4',
+        compress: true // Enables built-in PDF file compression for clean download
+      });
       
-      // Calculate scaled height to fit canvas width proportionally onto A4
-      const imgHeight = (canvasHeight * pdfWidth) / canvasWidth;
-      
-      const pdf = new jsPDF('p', 'mm', 'a4');
-      
-      if (imgHeight <= pdfHeight) {
-        // Content fits on a single page
-        pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, imgHeight);
-      } else {
-        // Multi-page layout
-        let heightLeft = imgHeight;
-        let position = 0;
-        
-        // Add first page
-        pdf.addImage(imgData, 'PNG', 0, position, pdfWidth, imgHeight);
-        heightLeft -= pdfHeight;
-        
-        // Add subsequent pages
-        while (heightLeft > 0) {
-          position = heightLeft - imgHeight; // Shift position up by the offset
-          pdf.addPage();
-          pdf.addImage(imgData, 'PNG', 0, position, pdfWidth, imgHeight);
-          heightLeft -= pdfHeight;
-        }
-      }
+      // Since .generating-pdf forces the aspect ratio to exactly match A4 (800x1130 px),
+      // adding the captured image at (0, 0, pdfWidth, pdfHeight) fits perfectly as exactly one A4 page.
+      pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
       
       const filename = 'Rajat_Krishnan_Resume.pdf';
       const blob = pdf.output('blob');
@@ -317,28 +340,40 @@ export default function ResumeModal({ isOpen, onClose }: ResumeModalProps) {
                   </span>
                 </div>
 
-                <button
-                  onClick={handleDownload}
-                  disabled={isDownloading}
-                  className={`inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-primary-accent text-white text-xs font-mono font-bold transition-all shadow-sm min-h-[44px] min-w-[44px] justify-center active:scale-95 touch-manipulation ${
-                    isDownloading
-                      ? 'opacity-70 cursor-not-allowed'
-                      : 'hover:bg-secondary-accent cursor-pointer'
-                  }`}
-                  aria-label="Download Resume"
-                >
-                  {isDownloading ? (
-                    <>
-                      <span className="w-3.5 h-3.5 border-2 border-white border-t-transparent rounded-full animate-spin shrink-0" />
-                      <span>Saving...</span>
-                    </>
-                  ) : (
-                    <>
-                      <Download className="w-4 h-4 text-white dark:text-slate-950 shrink-0" />
-                      <span>Download</span>
-                    </>
-                  )}
-                </button>
+                <div className="flex items-center gap-2 shrink-0">
+                  <button
+                    onClick={prepareAndPrint}
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-slate-100 transition-all cursor-pointer min-h-[44px] min-w-[44px] justify-center active:scale-95 touch-manipulation"
+                    aria-label="Print or Save Vector PDF"
+                  >
+                    <Printer className="w-4 h-4 text-slate-500 dark:text-slate-400 shrink-0" />
+                    <span className="text-xs font-mono font-bold uppercase tracking-wider hidden sm:inline">Print / Save Vector</span>
+                    <span className="text-xs font-mono font-bold uppercase tracking-wider sm:hidden">Print</span>
+                  </button>
+
+                  <button
+                    onClick={handleDownload}
+                    disabled={isDownloading}
+                    className={`inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-primary-accent text-white text-xs font-mono font-bold transition-all shadow-sm min-h-[44px] min-w-[44px] justify-center active:scale-95 touch-manipulation ${
+                      isDownloading
+                        ? 'opacity-70 cursor-not-allowed'
+                        : 'hover:bg-secondary-accent cursor-pointer'
+                    }`}
+                    aria-label="Download Resume"
+                  >
+                    {isDownloading ? (
+                      <>
+                        <span className="w-3.5 h-3.5 border-2 border-white border-t-transparent rounded-full animate-spin shrink-0" />
+                        <span>Saving...</span>
+                      </>
+                    ) : (
+                      <>
+                        <Download className="w-4 h-4 text-white shrink-0" />
+                        <span>Download PDF</span>
+                      </>
+                    )}
+                  </button>
+                </div>
               </div>
 
               {downloadError && (
@@ -364,6 +399,14 @@ export default function ResumeModal({ isOpen, onClose }: ResumeModalProps) {
                   </div>
                 </div>
               )}
+
+              {/* Info / Tip Bar */}
+              <div className="bg-blue-50/60 dark:bg-slate-850 border-b border-blue-100/40 dark:border-slate-800/60 px-4 py-2 text-[11px] text-slate-600 dark:text-slate-400 flex items-center justify-center gap-2 print:hidden text-center">
+                <span className="w-1.5 h-1.5 rounded-full bg-primary-accent shrink-0 animate-pulse" />
+                <p className="font-mono text-[10px] sm:text-[11px] leading-relaxed">
+                  <strong>ATS-Friendly Option:</strong> For 100% vector selectable text, click <strong>Print / Save Vector</strong> and choose <strong>Save as PDF</strong> in your browser print settings.
+                </p>
+              </div>
 
               {/* Printable Area Wrapper */}
               <div
